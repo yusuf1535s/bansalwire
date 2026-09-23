@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0f172a;
+  --color-accent: #e31e24;
+  --color-accent-light: #ff333a;
+  --color-accent-dark: #b81419;
+  --color-accent-orange: #f15822;
+  --color-bansal-footer: #1e2022;
+  --color-bansal-gray: #f8fafc;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --font-heading: 'Lato', 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #1e293b;
+  background: #ffffff;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Lato', sans-serif;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* Modern Bento Card Style */
+.bento-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.25rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.bento-card:hover {
+  transform: translateY(-3px);
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.08), 0 8px 16px -4px rgba(0, 0, 0, 0.04);
+}
+
+.bento-card-red:hover {
+  border-color: rgba(227, 30, 36, 0.3);
+  box-shadow: 0 12px 30px -6px rgba(227, 30, 36, 0.12);
+}
+
+/* Subtle Gradient Accents */
+.gradient-badge {
+  background: linear-gradient(135deg, #e31e24 0%, #b81419 100%);
+}
+
+.mesh-bg {
+  background-color: #ffffff;
+  background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Heading Underlines */
+.bansal-heading::after {
+  content: '';
+  display: block;
+  width: 42px;
+  height: 3.5px;
+  background: #e31e24;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.bansal-heading-center::after {
+  content: '';
+  display: block;
+  width: 42px;
+  height: 3.5px;
+  background: #e31e24;
+  border-radius: 4px;
+  margin: 10px auto 0;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #e31e24;
+}
