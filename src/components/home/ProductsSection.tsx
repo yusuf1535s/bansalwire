@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronRight, CheckCircle2 } from 'lucide-react'
+import { useStore } from '../../store/useStore'
 
 export const majorSectors = [
   {
@@ -121,12 +122,15 @@ export const productList = [
 ]
 
 export function ProductsSection() {
+  const { products } = useStore()
   const [activeTab, setActiveTab] = useState('all')
+
+  const displayList = products && products.length > 0 ? products : productList
 
   const filteredProducts =
     activeTab === 'all'
-      ? productList
-      : productList.filter((p) => p.category.toLowerCase().includes(activeTab.toLowerCase()))
+      ? displayList
+      : displayList.filter((p) => p.category.toLowerCase().includes(activeTab.toLowerCase()))
 
   return (
     <section className="py-16 bg-slate-50 dark:bg-[#0b0f19] font-sans transition-colors duration-300">
@@ -254,7 +258,7 @@ export function ProductsSection() {
                   </p>
 
                   <div className="mt-4 space-y-1">
-                    {product.features.slice(0, 2).map((feat, i) => (
+                    {(((product as any).specifications || (product as any).features || (product as any).applications || []) as string[]).slice(0, 2).map((feat: string, i: number) => (
                       <div key={i} className="flex items-center gap-1.5 text-[11px] text-gray-500 dark:text-slate-400 font-normal">
                         <CheckCircle2 className="w-3.5 h-3.5 text-[#e31e24] shrink-0" />
                         <span>{feat}</span>

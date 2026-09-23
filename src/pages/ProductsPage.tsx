@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import { useParams, useLocation, Link } from 'react-router-dom'
 import { AppWrapper } from '../components/layout/AppWrapper'
 import { PageMeta } from '../components/common/PageMeta'
-import { productList, majorSectors } from '../components/home/ProductsSection'
+import { majorSectors } from '../components/home/ProductsSection'
 import { SpecialProductsSection } from '../components/home/SpecialProductsSection'
 import { ArrowRight, ChevronRight, CheckCircle2, Search, SlidersHorizontal, Sparkles } from 'lucide-react'
+import { useStore } from '../store/useStore'
 
 const slugCategoryMap: Record<string, string> = {
   'stainless-steel-wires': 'Stainless Steel',
@@ -14,10 +15,10 @@ const slugCategoryMap: Record<string, string> = {
   'mild-steel': 'Mild Steel',
   'high-carbon-wires': 'High Carbon',
   'high-carbon': 'High Carbon',
-  'profile-shaped-wires': 'Shaped Wires',
-  'shaped-wires': 'Shaped Wires',
-  'aluminium-alloy': 'Aluminium Alloy',
-  'aluminium-alloy-wires': 'Aluminium Alloy',
+  'profile-shaped-wires': 'Profile',
+  'shaped-wires': 'Profile',
+  'aluminium-alloy': 'Aluminium',
+  'aluminium-alloy-wires': 'Aluminium',
   'galvanized-wires': 'Galvanized',
   'galvanized': 'Galvanized',
   'cable-armouring': 'Cable Armouring',
@@ -29,6 +30,7 @@ const slugCategoryMap: Record<string, string> = {
 export default function ProductsPage() {
   const { slug } = useParams<{ slug?: string }>()
   const location = useLocation()
+  const { products } = useStore()
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -54,19 +56,22 @@ export default function ProductsPage() {
     'Mild Steel',
     'High Carbon',
     'Galvanized',
-    'Shaped Wires',
+    'Profile',
     'Cable Armouring',
-    'Aluminium Alloy'
+    'Aluminium',
+    'Speciality'
   ]
 
-  const filtered = productList.filter((p) => {
+  const filtered = products.filter((p) => {
     const matchesCat =
       selectedCategory === 'All' ||
-      p.category.toLowerCase().includes(selectedCategory.toLowerCase())
+      p.category.toLowerCase().includes(selectedCategory.toLowerCase()) ||
+      (p.subCategory && p.subCategory.toLowerCase().includes(selectedCategory.toLowerCase()))
     const matchesSearch =
       p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.category.toLowerCase().includes(searchQuery.toLowerCase())
+      p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.subCategory && p.subCategory.toLowerCase().includes(searchQuery.toLowerCase()))
     return matchesCat && matchesSearch
   })
 
@@ -159,7 +164,7 @@ export default function ProductsPage() {
                   </p>
 
                   <div className="mt-4 space-y-1">
-                    {product.features.map((feat, i) => (
+                    {(product.specifications || (product as any).features || product.applications || []).slice(0, 4).map((feat: string, i: number) => (
                       <div key={i} className="flex items-center gap-1.5 text-[11px] text-gray-500 font-normal">
                         <CheckCircle2 className="w-3.5 h-3.5 text-[#e31e24] shrink-0" />
                         <span>{feat}</span>
