@@ -87,16 +87,30 @@ export function FloatingWidgets() {
   return (
     <div className="fixed bottom-6 right-6 z-40 font-sans">
       
-      {/* Refined Single Floating Trigger Button */}
+      {/* Refined Floating Trigger Buttons */}
       {!chatOpen && (
-        <button
-          onClick={() => setChatOpen(true)}
-          className="flex items-center gap-2.5 bg-[#e31e24] hover:bg-[#b81419] text-white px-4 py-3 rounded-full shadow-2xl hover:scale-105 transition-all duration-200 border-2 border-white cursor-pointer group"
-          aria-label="Open AI Assistant"
-        >
-          <Sparkles className="w-4 h-4 text-amber-300 group-hover:rotate-12 transition-transform" />
-          <span className="font-bold text-xs tracking-wide font-['Lato']">Ask AI Assistant</span>
-        </button>
+        <div className="flex items-center gap-2.5">
+          <a
+            href="https://api.whatsapp.com/send?text=Hello%20Bansal%20Wire%20Industries,%20I%20have%20an%20enquiry%20regarding%20steel%20wires"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white px-3.5 py-3 rounded-full shadow-2xl hover:scale-105 transition-all duration-200 border-2 border-white cursor-pointer group"
+            aria-label="Chat on WhatsApp"
+            title="Chat on WhatsApp"
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span className="font-bold text-xs tracking-wide font-['Lato'] hidden sm:inline">WhatsApp</span>
+          </a>
+
+          <button
+            onClick={() => setChatOpen(true)}
+            className="flex items-center gap-2.5 bg-[#e31e24] hover:bg-[#b81419] text-white px-4 py-3 rounded-full shadow-2xl hover:scale-105 transition-all duration-200 border-2 border-white cursor-pointer group"
+            aria-label="Open AI Assistant"
+          >
+            <Sparkles className="w-4 h-4 text-amber-300 group-hover:rotate-12 transition-transform" />
+            <span className="font-bold text-xs tracking-wide font-['Lato']">Ask AI Assistant</span>
+          </button>
+        </div>
       )}
 
       {/* Modern AI Assistant Window */}
@@ -145,7 +159,7 @@ export function FloatingWidgets() {
             <span className="text-slate-600 font-medium">Need immediate sales team?</span>
             <div className="flex items-center gap-2">
               <a
-                href="https://api.whatsapp.com/send?phone=911123651890&text=Hello%20Bansal%20Wire%20Industries,%20I%20have%20an%20enquiry"
+                href="https://api.whatsapp.com/send?text=Hello%20Bansal%20Wire%20Industries,%20I%20have%20an%20enquiry"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-[10px] font-bold bg-[#25D366] hover:bg-[#20ba5a] text-white px-2 py-0.5 rounded shadow-xs transition"

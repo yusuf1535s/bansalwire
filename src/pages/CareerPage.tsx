@@ -114,6 +114,8 @@ export default function CareerPage() {
                   <img
                     src={val.icon}
                     alt={val.title}
+                    loading="lazy"
+                    decoding="async"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src = '/images/bansal/1-1.png'
                     }}
@@ -143,14 +145,16 @@ export default function CareerPage() {
                 { img: '/images/bansal/WhatsApp-Image-2025-09-18-at-15.39.31.jpeg', caption: 'Dadri Plant Construction & Engineering' }
               ].map((item, idx) => (
                 <div key={idx} className="rounded-xl overflow-hidden group shadow-xs bg-white border border-gray-200 flex flex-col">
-                  <div className="h-48 overflow-hidden bg-gray-100">
+                  <div className="h-52 overflow-hidden bg-slate-50 flex items-center justify-center p-2">
                     <img
                       src={item.img}
                       alt={item.caption}
+                      loading="lazy"
+                      decoding="async"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src = '/images/bansal/Wires-320x320.jpg'
                       }}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                   <div className="p-3 bg-white border-t border-gray-100">

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { AppWrapper } from '../components/layout/AppWrapper'
 import { PageMeta } from '../components/common/PageMeta'
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, ShieldCheck } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, ShieldCheck, MessageCircle } from 'lucide-react'
 import { useStore } from '../store/useStore'
 
 export default function ContactPage() {
@@ -63,6 +63,9 @@ export default function ContactPage() {
       })
     }, 4000)
   }
+
+  const whatsappMessage = `Hello Bansal Wire Industries, I would like to enquire about ${formData.category}.${formData.diameter ? ` Grade/Diameter: ${formData.diameter}.` : ''}${formData.name ? ` Name: ${formData.name}.` : ''}${formData.phone ? ` Phone: ${formData.phone}.` : ''}${formData.message ? ` Details: ${formData.message}` : ''}`
+  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappMessage)}`
 
   return (
     <AppWrapper>
@@ -228,13 +231,24 @@ export default function ContactPage() {
                   />
                 </div>
 
-                {/* Row 4: Full-Width Submit Button */}
-                <div>
+                {/* Row 4: Submit & WhatsApp Action Buttons */}
+                <div className="flex flex-col sm:flex-row items-center justify-end gap-3.5 pt-2">
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold py-4 px-6 rounded-xl text-xs sm:text-sm uppercase tracking-wider shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Chat / Enquire on WhatsApp</span>
+                  </a>
+
                   <button
                     type="submit"
-                    className="w-full bg-[#e31e24] hover:bg-[#b81419] text-white font-bold py-4 px-6 rounded-xl text-xs sm:text-sm uppercase tracking-wider shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full sm:w-auto bg-[#e31e24] hover:bg-[#b81419] text-white font-bold py-4 px-8 rounded-xl text-xs sm:text-sm uppercase tracking-wider shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <Send className="w-4 h-4" /> Submit Requirement To Sales Team
+                    <Send className="w-4 h-4" />
+                    <span>Submit Requirement To Sales Team</span>
                   </button>
                 </div>
 
@@ -250,7 +264,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             
             <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs flex items-start gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-red-50 text-[#e31e24] flex items-center justify-center shrink-0">
+              <div className="text-[#e31e24] shrink-0 mt-0.5">
                 <MapPin className="w-5 h-5" />
               </div>
               <div>
@@ -264,21 +278,30 @@ export default function ContactPage() {
             </div>
 
             <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs flex items-start gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-red-50 text-[#e31e24] flex items-center justify-center shrink-0">
+              <div className="text-[#e31e24] shrink-0 mt-0.5">
                 <Phone className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-bold text-gray-900 text-xs uppercase tracking-wider text-gray-400">
-                  Direct Lines
+                  Direct Lines &amp; WhatsApp
                 </h3>
                 <p className="text-xs text-gray-800 font-medium mt-0.5">
-                  <a href="tel:011-23651890" className="hover:text-[#e31e24]">011-23651890</a> / <a href="tel:011-23651891" className="hover:text-[#e31e24]">91</a> / <a href="tel:011-23651892" className="hover:text-[#e31e24]">92</a> / <a href="tel:011-23651893" className="hover:text-[#e31e24]">93</a>
+                  <a href="tel:011-23651890" className="hover:text-[#e31e24]">011-23651890</a> / <a href="tel:011-23651891" className="hover:text-[#e31e24]">91</a> / <a href="tel:011-23651892" className="hover:text-[#e31e24]">92</a>
                 </p>
+                <a
+                  href="https://api.whatsapp.com/send?text=Hello%20Bansal%20Wire%20Industries,%20I%20have%20an%20enquiry%20regarding%20steel%20wires"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 mt-2 text-xs font-bold text-[#25D366] hover:text-[#20ba5a] transition"
+                >
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  <span>Chat on WhatsApp</span>
+                </a>
               </div>
             </div>
 
             <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs flex items-start gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-red-50 text-[#e31e24] flex items-center justify-center shrink-0">
+              <div className="text-[#e31e24] shrink-0 mt-0.5">
                 <Mail className="w-5 h-5" />
               </div>
               <div>
@@ -292,7 +315,7 @@ export default function ContactPage() {
             </div>
 
             <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs flex items-start gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-red-50 text-[#e31e24] flex items-center justify-center shrink-0">
+              <div className="text-[#e31e24] shrink-0 mt-0.5">
                 <Clock className="w-5 h-5" />
               </div>
               <div>

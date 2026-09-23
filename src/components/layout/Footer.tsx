@@ -14,6 +14,8 @@ export function Footer() {
             <Link to="/" className="inline-block">
               <img
                 src="/images/bansal/BANSAL-LOGO-2.png"
+                loading="lazy"
+                decoding="async"
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).src = '/images/logo.png'
                 }}

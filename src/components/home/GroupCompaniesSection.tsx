@@ -59,6 +59,8 @@ export function GroupCompaniesSection() {
               <img
                 src="/images/bansal/map-1.png"
                 alt="Bansal Wire Global Map"
+                loading="lazy"
+                decoding="async"
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).src = '/images/bansal/map-2-1.png'
                 }}
@@ -87,9 +89,7 @@ export function GroupCompaniesSection() {
                 key={index}
                 className="bg-white dark:bg-[#111827] rounded-lg p-4 border border-gray-200 dark:border-slate-800 hover:border-[#e31e24] dark:hover:border-[#e31e24] hover:shadow-sm transition-all duration-200 flex items-center gap-3.5 group"
               >
-                <div className="w-9 h-9 rounded-full bg-red-50 dark:bg-red-950/40 group-hover:bg-[#e31e24] text-[#e31e24] dark:text-[#ff6b6e] group-hover:text-white flex items-center justify-center shrink-0 transition-colors">
-                  <Building2 className="w-4 h-4" />
-                </div>
+                <Building2 className="w-5 h-5 text-[#e31e24] dark:text-[#ff6b6e] shrink-0 group-hover:scale-110 transition-transform" />
                 <div className="flex-1">
                   <span className="font-bold text-gray-800 dark:text-slate-200 text-sm group-hover:text-[#e31e24] dark:group-hover:text-[#ff6b6e] transition-colors font-['Lato']">
                     {company}

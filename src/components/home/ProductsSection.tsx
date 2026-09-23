@@ -150,17 +150,19 @@ export function ProductsSection() {
                 className="bg-white dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-[#e31e24]/40 dark:hover:border-[#e31e24]/60 transition-all duration-300 flex flex-col overflow-hidden group hover:-translate-y-1"
               >
                 {/* Large Visual Image Display */}
-                <div className="relative h-48 sm:h-52 bg-gradient-to-b from-slate-50 to-slate-100/70 dark:from-slate-800/40 dark:to-slate-900/60 p-4 flex items-center justify-center border-b border-slate-100 dark:border-slate-800/60 overflow-hidden">
-                  <span className="absolute top-3 left-3 text-[10px] font-black tracking-widest text-slate-400 dark:text-slate-500 bg-white/80 dark:bg-slate-800/80 px-2 py-0.5 rounded-md backdrop-blur-xs">
+                <div className="relative aspect-square sm:aspect-[4/3] bg-slate-50 dark:bg-slate-800/40 overflow-hidden border-b border-slate-100 dark:border-slate-800/60 flex items-center justify-center p-3">
+                  <span className="absolute top-3 left-3 text-[10px] font-black tracking-widest text-slate-700 dark:text-slate-200 bg-white/90 dark:bg-slate-800/90 px-2 py-0.5 rounded-md backdrop-blur-xs z-20 shadow-xs">
                     0{index + 1}
                   </span>
                   <img
                     src={sector.iconImg}
                     alt={sector.name}
+                    loading="lazy"
+                    decoding="async"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src = '/images/bansal/1-1.png'
                     }}
-                    className="w-full h-full object-contain filter drop-shadow-md group-hover:scale-108 transition-transform duration-300"
+                    className="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
 
@@ -225,17 +227,19 @@ export function ProductsSection() {
               className="bansal-card bg-white dark:bg-[#111827] rounded-xl overflow-hidden border border-gray-200 dark:border-slate-800 flex flex-col justify-between group"
             >
               <div>
-                {/* Product Image Container */}
-                <div className="relative h-52 bg-gray-100 dark:bg-[#151d2e] overflow-hidden border-b border-gray-100 dark:border-slate-800 flex items-center justify-center p-4">
+                {/* Product Image Container - Aspect 4:3 */}
+                <div className="relative aspect-[4/3] bg-slate-50 dark:bg-[#151d2e] overflow-hidden border-b border-gray-100 dark:border-slate-800 flex items-center justify-center p-3">
                   <img
                     src={product.image}
                     alt={product.name}
+                    loading="lazy"
+                    decoding="async"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src = '/images/bansal/Wires-320x320.jpg'
                     }}
-                    className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-contain filter drop-shadow-xs group-hover:scale-105 transition-transform duration-300"
                   />
-                  <span className="absolute top-3 left-3 bg-[#e31e24] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                  <span className="absolute top-3 left-3 bg-[#e31e24] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider z-20 shadow-xs">
                     {product.category}
                   </span>
                 </div>

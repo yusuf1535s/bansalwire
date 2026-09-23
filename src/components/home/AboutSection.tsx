@@ -47,10 +47,9 @@ export function AboutSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-100 dark:bg-red-950/50 text-[#e31e24] dark:text-[#ff6b6e] text-[11px] font-bold uppercase tracking-wider mb-2">
-            <Sparkles className="w-3.5 h-3.5" />
+          <p className="text-black dark:text-white font-bold text-xs sm:text-sm uppercase tracking-wider mb-2 font-['Lato']">
             Corporate Legacy Since 1985 (1938 Origins)
-          </div>
+          </p>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight font-['Lato'] bansal-heading-center">
             About Bansal Wire
           </h2>
@@ -66,7 +65,7 @@ export function AboutSection() {
               className="bento-card bento-card-red p-6 flex flex-col justify-between group bg-white dark:bg-[#111827] border border-gray-200 dark:border-slate-800"
             >
               <div>
-                <div className="w-12 h-12 rounded-xl bg-red-50 dark:bg-red-950/40 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <div className="mb-4 text-[#e31e24] group-hover:scale-110 transition-transform">
                   {pillar.icon}
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white font-['Lato'] mb-2 group-hover:text-[#e31e24] dark:group-hover:text-[#ff6b6e] transition-colors">
@@ -106,8 +105,8 @@ export function AboutSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bento-card bento-card-red p-8 flex flex-col justify-between bg-white dark:bg-[#111827] border border-gray-200 dark:border-slate-800">
             <div>
-              <div className="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-950/50 flex items-center justify-center text-[#e31e24] dark:text-[#ff6b6e] mb-4">
-                <Globe className="w-6 h-6" />
+              <div className="text-[#e31e24] dark:text-[#ff6b6e] mb-4">
+                <Globe className="w-8 h-8" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white font-['Lato'] bansal-heading">
                 Our Global Network
@@ -128,8 +127,8 @@ export function AboutSection() {
 
           <div className="bento-card bento-card-red p-8 flex flex-col justify-between bg-white dark:bg-[#111827] border border-gray-200 dark:border-slate-800">
             <div>
-              <div className="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-950/50 flex items-center justify-center text-[#e31e24] dark:text-[#ff6b6e] mb-4">
-                <Users className="w-6 h-6" />
+              <div className="text-[#e31e24] dark:text-[#ff6b6e] mb-4">
+                <Users className="w-8 h-8" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white font-['Lato'] bansal-heading">
                 Visionary Leadership

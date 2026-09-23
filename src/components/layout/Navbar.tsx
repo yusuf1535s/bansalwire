@@ -49,6 +49,7 @@ export function Navbar() {
             <Link to="/" className="flex items-center shrink-0">
               <img
                 src="/images/bansal/BANSAL-LOGO-2.png"
+                decoding="async"
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).src = '/images/logo.png'
                 }}

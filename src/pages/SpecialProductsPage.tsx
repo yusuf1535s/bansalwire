@@ -51,14 +51,16 @@ export default function SpecialProductsPage() {
               { name: 'Cross Connectors', img: '/images/bansal/Cross-Connectors.jpg' }
             ].map((item, idx) => (
               <div key={idx} className="bg-white p-4 rounded-xl border border-gray-200 text-center shadow-xs hover:border-[#e31e24] transition group">
-                <div className="h-32 bg-gray-100 rounded-lg overflow-hidden mb-3 flex items-center justify-center p-2">
+                <div className="aspect-[4/3] bg-slate-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center p-2">
                   <img
                     src={item.img}
                     alt={item.name}
+                    loading="lazy"
+                    decoding="async"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src = '/images/bansal/Anchor-Bolt1.jpg'
                     }}
-                    className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform"
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
                 <h4 className="font-bold text-gray-900 text-xs sm:text-sm font-['Lato'] group-hover:text-[#e31e24] transition-colors">

@@ -80,16 +80,18 @@ export default function QualityPage() {
             </p>
           </div>
 
-          <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-200">
+          <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-slate-900 flex items-center justify-center h-80">
             <img
               src="/images/bansal/DSC_4125-1.jpg"
               alt="Testing Laboratory"
+              loading="lazy"
+              decoding="async"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).src = '/images/bansal/black-and-white-cogs-gears-159298.jpg'
               }}
-              className="w-full h-80 object-cover"
+              className="max-h-full max-w-full object-contain"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6 pointer-events-none">
               <span className="text-white font-bold text-sm font-['Lato']">In-House Metallurgical Quality Control Lab</span>
             </div>
           </div>

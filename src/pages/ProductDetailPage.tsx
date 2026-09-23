@@ -76,12 +76,14 @@ export default function ProductDetailPage() {
               <ArrowLeft className="w-4 h-4" /> Back to Products
             </Link>
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white rounded-xl overflow-hidden h-72 border border-gray-200 shadow-xs flex items-center justify-center">
+              <div className="bg-slate-50 dark:bg-[#151d2e] rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-[16/11] border border-gray-200 dark:border-slate-800 shadow-xs flex items-center justify-center p-6">
                 {product.image ? (
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-contain filter drop-shadow-md"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src = '/images/bansal/DSC_4109-1-scaled.jpg'
                     }}

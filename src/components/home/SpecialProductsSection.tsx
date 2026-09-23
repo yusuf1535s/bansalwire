@@ -67,17 +67,19 @@ export function SpecialProductsSection() {
               className="bansal-card bg-white dark:bg-[#111827] rounded-xl overflow-hidden border border-gray-200 dark:border-slate-800 flex flex-col justify-between group shadow-sm hover:shadow-md transition-all duration-200"
             >
               <div>
-                {/* Clean Image Showcase - No overlapping text */}
-                <div className="relative h-52 bg-gray-100 dark:bg-[#151d2e] overflow-hidden border-b border-gray-100 dark:border-slate-800">
+                {/* Clean Image Showcase - Aspect 4:3 */}
+                <div className="relative aspect-[4/3] bg-slate-50 dark:bg-[#151d2e] overflow-hidden border-b border-gray-100 dark:border-slate-800 flex items-center justify-center p-3">
                   <img
                     src={item.image}
                     alt={item.name}
+                    loading="lazy"
+                    decoding="async"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src = '/images/bansal/Wires-320x320.jpg'
                     }}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-contain filter drop-shadow-xs group-hover:scale-105 transition-transform duration-300"
                   />
-                  <span className="absolute top-3 left-3 bg-[#e31e24] text-white text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider shadow">
+                  <span className="absolute top-3 left-3 bg-[#e31e24] text-white text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider shadow z-10">
                     Specialized
                   </span>
                 </div>

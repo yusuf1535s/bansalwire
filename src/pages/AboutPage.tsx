@@ -22,8 +22,8 @@ export default function AboutPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bansal-card bg-white dark:bg-[#111827] p-6 sm:p-8 rounded-xl border border-gray-200 dark:border-slate-800">
-                <div className="w-10 h-10 bg-red-100 dark:bg-red-950/50 text-[#e31e24] dark:text-[#ff6b6e] rounded-lg flex items-center justify-center mb-3">
-                  <Compass className="w-5 h-5" />
+                <div className="text-[#e31e24] dark:text-[#ff6b6e] mb-3">
+                  <Compass className="w-6 h-6" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white font-['Lato'] bansal-heading">Our Vision</h3>
                 <p className="text-gray-600 dark:text-slate-300 mt-3 leading-relaxed text-xs sm:text-sm font-normal">
@@ -32,8 +32,8 @@ export default function AboutPage() {
               </div>
 
               <div className="bansal-card bg-white dark:bg-[#111827] p-6 sm:p-8 rounded-xl border border-gray-200 dark:border-slate-800">
-                <div className="w-10 h-10 bg-red-100 dark:bg-red-950/50 text-[#e31e24] dark:text-[#ff6b6e] rounded-lg flex items-center justify-center mb-3">
-                  <Target className="w-5 h-5" />
+                <div className="text-[#e31e24] dark:text-[#ff6b6e] mb-3">
+                  <Target className="w-6 h-6" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white font-['Lato'] bansal-heading">Our Mission</h3>
                 <p className="text-gray-600 dark:text-slate-300 mt-3 leading-relaxed text-xs sm:text-sm font-normal">
@@ -133,6 +133,8 @@ export default function AboutPage() {
                 <img
                   src="/images/bansal/map-1.png"
                   alt="Presence Map"
+                  loading="lazy"
+                  decoding="async"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src = '/images/bansal/map-2-1.png'
                   }}
@@ -185,14 +187,16 @@ export default function AboutPage() {
                 }
               ].map((csr, i) => (
                 <div key={i} className="bansal-card bg-white dark:bg-[#111827] rounded-xl overflow-hidden border border-gray-200 dark:border-slate-800 group">
-                  <div className="h-44 overflow-hidden bg-gray-100 dark:bg-slate-800">
+                  <div className="h-44 overflow-hidden bg-slate-50 dark:bg-slate-800 flex items-center justify-center p-2">
                     <img
                       src={csr.image}
                       alt={csr.title}
+                      loading="lazy"
+                      decoding="async"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src = '/images/bansal/DSC_4109-1-scaled.jpg'
                       }}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                   <div className="p-4">
