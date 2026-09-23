@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useStore } from '../../store/useStore'
-import { Edit2, Trash2, UserPlus, Search, Shield, ShieldCheck, UserCheck, UserX, X, CheckCircle2 } from 'lucide-react'
+import { Edit2, Trash2, UserPlus, Search, Shield, ShieldCheck, UserCheck, UserX, X, CheckCircle2, Lock, Eye, EyeOff, KeyRound } from 'lucide-react'
 import type { User } from '../../types'
 
 export function UserTable() {
@@ -10,9 +10,11 @@ export function UserTable() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add')
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
+  const [showPassword, setShowPassword] = useState(false)
   const [form, setForm] = useState({
     name: '',
     email: '',
+    password: '',
     role: 'editor' as 'admin' | 'editor',
     isActive: true
   })
@@ -29,9 +31,11 @@ export function UserTable() {
   const handleOpenAdd = () => {
     setModalMode('add')
     setSelectedUserId(null)
+    setShowPassword(false)
     setForm({
       name: '',
       email: '',
+      password: '',
       role: 'editor',
       isActive: true
     })
@@ -41,9 +45,11 @@ export function UserTable() {
   const handleOpenEdit = (user: User) => {
     setModalMode('edit')
     setSelectedUserId(user.id)
+    setShowPassword(false)
     setForm({
       name: user.name,
       email: user.email,
+      password: '',
       role: user.role,
       isActive: user.isActive
     })
@@ -55,24 +61,34 @@ export function UserTable() {
     if (!form.name || !form.email) return
 
     if (modalMode === 'add') {
+      if (!form.password || form.password.trim().length < 4) {
+        alert('Please provide a password of at least 4 characters for this user.')
+        return
+      }
+
       const newUser: User = {
         id: `user-${Date.now()}`,
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
+        password: form.password.trim(),
         role: form.role,
         isActive: form.isActive,
         lastLogin: 'Never'
       }
       addUser(newUser)
-      setMessage(`User "${newUser.name}" added successfully!`)
+      setMessage(`User "${newUser.name}" added successfully with login password!`)
     } else if (modalMode === 'edit' && selectedUserId) {
-      updateUser(selectedUserId, {
+      const updates: Partial<User> = {
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
         role: form.role,
         isActive: form.isActive
-      })
-      setMessage(`User updated successfully!`)
+      }
+      if (form.password.trim()) {
+        updates.password = form.password.trim()
+      }
+      updateUser(selectedUserId, updates)
+      setMessage(`User details & credentials updated successfully!`)
     }
 
     setIsModalOpen(false)
@@ -156,6 +172,38 @@ export function UserTable() {
                   required
                   className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#e31e24]/20 focus:border-[#e31e24] transition"
                 />
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    {modalMode === 'add' ? 'Login Password' : 'Change Password'}
+                  </label>
+                  {modalMode === 'edit' && (
+                    <span className="text-[11px] text-slate-400 font-medium">Leave blank to keep existing</span>
+                  )}
+                </div>
+                <div className="relative">
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                    <KeyRound className="w-4 h-4" />
+                  </div>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder={modalMode === 'add' ? 'Enter a secure login password' : 'Enter new password if changing'}
+                    value={form.password}
+                    onChange={(e) => setForm({ ...form, password: e.target.value })}
+                    required={modalMode === 'add'}
+                    className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#e31e24]/20 focus:border-[#e31e24] transition"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-0.5 rounded cursor-pointer"
+                    title={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">

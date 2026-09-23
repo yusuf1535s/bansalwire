@@ -196,8 +196,8 @@ const loadNotifications = (): AdminNotification[] => {
 }
 
 const defaultUsers: User[] = [
-  { id: '1', name: 'Yusuf (Super Admin)', email: 'yusuf@gmail.com', role: 'admin', isActive: true, lastLogin: '2026-09-24 00:35' },
-  { id: '2', name: 'Technical Sales Lead', email: 'sales.lead@bansalwire.com', role: 'editor', isActive: true, lastLogin: '2026-09-23 16:40' },
+  { id: '1', name: 'Yusuf (Super Admin)', email: 'yusuf@gmail.com', role: 'admin', password: 'Yusuf@12345', isActive: true, lastLogin: '2026-09-24 00:35' },
+  { id: '2', name: 'Technical Sales Lead', email: 'sales.lead@bansalwire.com', role: 'editor', password: 'Bansal@12345', isActive: true, lastLogin: '2026-09-23 16:40' },
 ]
 
 const loadUsers = (): User[] => {

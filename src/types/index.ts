@@ -40,6 +40,7 @@ export interface User {
   name: string;
   email: string;
   role: 'admin' | 'editor';
+  password?: string;
   isActive: boolean;
   lastLogin?: string;
 }

@@ -270,16 +270,18 @@ export async function fetchUsersDB(): Promise<User[]> {
 export async function insertUserDB(user: User): Promise<boolean> {
   if (!supabase) return false
   try {
-    const { error } = await supabase.from('users').upsert([
-      {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        isActive: user.isActive,
-        lastLogin: user.lastLogin || null
-      }
-    ])
+    const payload: Record<string, any> = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      isActive: user.isActive,
+      lastLogin: user.lastLogin || null
+    }
+    if (user.password) {
+      payload.password = user.password
+    }
+    const { error } = await supabase.from('users').upsert([payload])
     if (error) throw error
     return true
   } catch (err) {

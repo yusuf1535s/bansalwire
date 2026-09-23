@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS public.users (
     name TEXT NOT NULL,
     email TEXT NOT NULL,
     role TEXT NOT NULL DEFAULT 'editor' CHECK (role IN ('admin', 'editor')),
+    password TEXT,
     "isActive" BOOLEAN NOT NULL DEFAULT TRUE,
     "lastLogin" TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
