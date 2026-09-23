@@ -1,0 +1,10 @@
+.git
+.agents
+.claude
+.qwen
+.zencoder
+.vite
+node_modules
+dist
+dist-ssr
+*.log
