@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Bell, Search, ExternalLink, CheckCheck, MessageSquare, Clock, User, X, CheckCircle2 } from 'lucide-react'
+import { Bell, Search, ExternalLink, CheckCheck, MessageSquare, Clock, User, X, CheckCircle2, Menu } from 'lucide-react'
 import { useStore } from '../../store/useStore'
 
-export function Header() {
+interface HeaderProps {
+  onOpenMobileSidebar?: () => void
+}
+
+export function Header({ onOpenMobileSidebar }: HeaderProps) {
   const { notifications, markNotificationRead, markAllNotificationsRead, latestToast, clearToast, isAdminLoggedIn } = useStore()
   const [notifOpen, setNotifOpen] = useState(false)
   const navigate = useNavigate()
@@ -53,10 +57,20 @@ export function Header() {
         </div>
       )}
 
-      <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-30 font-sans shadow-xs">
+      <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-30 font-sans shadow-xs">
         
-        {/* Left: Global Search & Breadcrumb info */}
-        <div className="flex items-center gap-4">
+        {/* Left: Mobile Menu Trigger & Global Search */}
+        <div className="flex items-center gap-2.5 sm:gap-4">
+          {onOpenMobileSidebar && (
+            <button
+              onClick={onOpenMobileSidebar}
+              className="md:hidden p-2 rounded-xl text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer flex items-center justify-center"
+              aria-label="Open Admin Menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+          )}
+
           <div className="relative hidden sm:block">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input

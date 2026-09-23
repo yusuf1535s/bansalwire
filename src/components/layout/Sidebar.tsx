@@ -9,7 +9,7 @@ import {
   ChevronRight,
   LogOut,
   ExternalLink,
-  ShieldCheck
+  X
 } from 'lucide-react'
 import { useStore } from '../../store/useStore'
 
@@ -23,7 +23,12 @@ const menuItems = [
   { path: '/admin/settings', label: 'System Settings', icon: Settings },
 ]
 
-export function Sidebar() {
+interface SidebarProps {
+  mobileOpen?: boolean
+  onClose?: () => void
+}
+
+export function Sidebar({ mobileOpen = false, onClose }: SidebarProps) {
   const location = useLocation()
   const { isAdminLoggedIn, setAdminLogin, enquiries } = useStore()
 
@@ -31,12 +36,11 @@ export function Sidebar() {
 
   const unreadEnquiriesCount = enquiries.filter((e) => e.status === 'new' || e.status === 'pending').length
 
-  return (
-    <aside className="w-64 bg-[#0f172a] text-white flex flex-col fixed inset-y-0 left-0 z-40 hidden md:flex font-sans border-r border-slate-800">
-      
+  const sidebarContent = (
+    <div className="w-64 bg-[#0f172a] text-white flex flex-col h-full font-sans border-r border-slate-800">
       {/* Brand Header */}
-      <div className="p-5 border-b border-slate-800/80">
-        <Link to="/admin/dashboard" className="flex items-center gap-3">
+      <div className="p-5 border-b border-slate-800/80 flex items-center justify-between">
+        <Link to="/admin/dashboard" onClick={onClose} className="flex items-center gap-3">
           <div className="bg-[#e31e24] text-white font-black text-sm w-9 h-9 rounded-xl flex items-center justify-center shadow-md">
             BW
           </div>
@@ -49,6 +53,15 @@ export function Sidebar() {
             </p>
           </div>
         </Link>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="md:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+            aria-label="Close Sidebar"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
       </div>
 
       {/* Navigation */}
@@ -64,6 +77,7 @@ export function Sidebar() {
             <Link
               key={item.path}
               to={item.path}
+              onClick={onClose}
               className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 group ${
                 active
                   ? 'bg-[#e31e24] text-white shadow-md'
@@ -95,6 +109,7 @@ export function Sidebar() {
         <Link
           to="/"
           target="_blank"
+          onClick={onClose}
           className="flex items-center justify-between text-xs text-slate-400 hover:text-white px-3 py-2 rounded-xl hover:bg-slate-800 transition"
         >
           <span className="flex items-center gap-2">
@@ -105,14 +120,40 @@ export function Sidebar() {
         </Link>
 
         <button
-          onClick={() => setAdminLogin(false)}
+          onClick={() => {
+            onClose?.()
+            setAdminLogin(false)
+          }}
           className="flex items-center gap-2.5 text-xs font-semibold text-red-400 hover:text-white hover:bg-red-950/40 w-full px-3 py-2 rounded-xl transition cursor-pointer"
         >
           <LogOut className="w-4 h-4" />
           Sign Out
         </button>
       </div>
+    </div>
+  )
 
-    </aside>
+  return (
+    <>
+      {/* Desktop Persistent Sidebar */}
+      <aside className="w-64 fixed inset-y-0 left-0 z-40 hidden md:flex flex-col">
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile Drawer Overlay */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 md:hidden animate-in fade-in duration-200">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+            onClick={onClose}
+          />
+          {/* Drawer Panel */}
+          <aside className="fixed inset-y-0 left-0 z-50 w-64 shadow-2xl animate-in slide-in-from-left duration-300">
+            {sidebarContent}
+          </aside>
+        </div>
+      )}
+    </>
   )
 }
