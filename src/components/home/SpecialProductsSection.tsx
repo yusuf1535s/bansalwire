@@ -48,14 +48,14 @@ export const specialProductsList = [
 
 export function SpecialProductsSection() {
   return (
-    <section className="py-16 bg-white font-sans border-t border-gray-100">
+    <section className="py-16 bg-white dark:bg-[#0b0f19] font-sans border-t border-gray-100 dark:border-slate-800 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#111111] uppercase tracking-wide font-['Lato'] bansal-heading-center">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white uppercase tracking-wide font-['Lato'] bansal-heading-center">
             Special Products
           </h2>
-          <p className="text-gray-600 mt-4 text-sm sm:text-base font-normal">
+          <p className="text-slate-600 dark:text-slate-300 mt-4 text-sm sm:text-base font-normal">
             Specialized engineered wire products serving high-specification niche global industrial requirements.
           </p>
         </div>
@@ -64,11 +64,11 @@ export function SpecialProductsSection() {
           {specialProductsList.map((item) => (
             <div
               key={item.slug}
-              className="bansal-card bg-white rounded-xl overflow-hidden border border-gray-200 flex flex-col justify-between group shadow-sm hover:shadow-md transition-all duration-200"
+              className="bansal-card bg-white dark:bg-[#111827] rounded-xl overflow-hidden border border-gray-200 dark:border-slate-800 flex flex-col justify-between group shadow-sm hover:shadow-md transition-all duration-200"
             >
               <div>
                 {/* Clean Image Showcase - No overlapping text */}
-                <div className="relative h-52 bg-neutral-900 overflow-hidden border-b border-gray-100">
+                <div className="relative h-52 bg-gray-100 dark:bg-[#151d2e] overflow-hidden border-b border-gray-100 dark:border-slate-800">
                   <img
                     src={item.image}
                     alt={item.name}
@@ -84,25 +84,25 @@ export function SpecialProductsSection() {
 
                 {/* Card Body with Title and Specs */}
                 <div className="p-5">
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#e31e24] transition-colors font-['Lato'] mb-2">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-[#e31e24] dark:group-hover:text-[#ff6b6e] transition-colors font-['Lato'] mb-2">
                     {item.name}
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-600 font-normal leading-relaxed">
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-slate-300 font-normal leading-relaxed">
                     {item.description}
                   </p>
 
-                  <div className="mt-3 bg-gray-50 p-2.5 rounded border border-gray-100 text-[11px] text-gray-600">
-                    <strong className="text-gray-800 block mb-0.5">Key Specification:</strong>
+                  <div className="mt-3 bg-gray-50 dark:bg-[#151d2e] p-2.5 rounded border border-gray-100 dark:border-slate-800 text-[11px] text-gray-600 dark:text-slate-300">
+                    <strong className="text-gray-800 dark:text-slate-100 block mb-0.5">Key Specification:</strong>
                     {item.specs}
                   </div>
                 </div>
               </div>
 
               {/* Action Bar */}
-              <div className="px-5 pb-5 pt-2 flex items-center justify-between border-t border-gray-100">
+              <div className="px-5 pb-5 pt-2 flex items-center justify-between border-t border-gray-100 dark:border-slate-800">
                 <Link
                   to="/special-products"
-                  className="text-xs font-bold text-[#e31e24] hover:text-[#b81419] flex items-center gap-1 uppercase tracking-wider"
+                  className="text-xs font-bold text-[#e31e24] hover:text-[#b81419] dark:hover:text-[#ff6b6e] flex items-center gap-1 uppercase tracking-wider"
                 >
                   Learn More <ChevronRight className="w-3.5 h-3.5" />
                 </Link>

@@ -6,43 +6,57 @@ import {
   Users,
   FileText,
   Settings,
-  BarChart3,
   ChevronRight,
-  X,
+  LogOut,
+  ExternalLink,
+  ShieldCheck
 } from 'lucide-react'
 import { useStore } from '../../store/useStore'
 
 const menuItems = [
   { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/admin/products', label: 'Products', icon: Package },
-  { path: '/admin/pages', label: 'Pages', icon: FileText },
-  { path: '/admin/enquiries', label: 'Enquiries', icon: ClipboardList },
-  { path: '/admin/team', label: 'Team', icon: Users },
-  { path: '/admin/users', label: 'Users', icon: Users },
-  { path: '/admin/settings', label: 'Settings', icon: Settings },
+  { path: '/admin/products', label: 'Products & SKUs', icon: Package },
+  { path: '/admin/enquiries', label: 'Enquiries & Leads', icon: ClipboardList, badge: true },
+  { path: '/admin/team', label: 'Board & Leadership', icon: Users },
+  { path: '/admin/pages', label: 'CMS Page Content', icon: FileText },
+  { path: '/admin/users', label: 'Admin Users', icon: Users },
+  { path: '/admin/settings', label: 'System Settings', icon: Settings },
 ]
 
 export function Sidebar() {
   const location = useLocation()
-  const { isAdminLoggedIn, setAdminLogin } = useStore()
+  const { isAdminLoggedIn, setAdminLogin, enquiries } = useStore()
 
   if (!isAdminLoggedIn) return null
 
+  const unreadEnquiriesCount = enquiries.filter((e) => e.status === 'new' || e.status === 'pending').length
+
   return (
-    <aside className="w-64 bg-primary-dark text-white flex flex-col fixed inset-y-0 left-0 z-40 hidden md:flex">
-      <div className="p-5 border-b border-white/10">
-        <div className="flex items-center gap-3">
-          <div className="bg-accent text-primary font-bold text-lg w-10 h-10 rounded-lg flex items-center justify-center">
+    <aside className="w-64 bg-[#0f172a] text-white flex flex-col fixed inset-y-0 left-0 z-40 hidden md:flex font-sans border-r border-slate-800">
+      
+      {/* Brand Header */}
+      <div className="p-5 border-b border-slate-800/80">
+        <Link to="/admin/dashboard" className="flex items-center gap-3">
+          <div className="bg-[#e31e24] text-white font-black text-sm w-9 h-9 rounded-xl flex items-center justify-center shadow-md">
             BW
           </div>
           <div>
-            <h2 className="font-semibold">Admin Panel</h2>
-            <p className="text-xs text-white/50">Bansal Wire Industries</p>
+            <h2 className="font-extrabold text-sm font-['Lato'] text-white tracking-wide">
+              BANSAL WIRE
+            </h2>
+            <p className="text-[10px] text-slate-400 font-medium">
+              Enterprise Admin Portal
+            </p>
           </div>
-        </div>
+        </Link>
       </div>
 
-      <nav className="flex-1 p-4 space-y-1 overflow-auto">
+      {/* Navigation */}
+      <nav className="flex-1 p-3.5 space-y-1 overflow-y-auto">
+        <div className="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+          Management
+        </div>
+
         {menuItems.map((item) => {
           const Icon = item.icon
           const active = location.pathname === item.path || location.pathname.startsWith(item.path + '/')
@@ -50,29 +64,55 @@ export function Sidebar() {
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition ${
+              className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 group ${
                 active
-                  ? 'bg-accent text-primary font-medium'
-                  : 'text-white/70 hover:bg-white/10 hover:text-white'
+                  ? 'bg-[#e31e24] text-white shadow-md'
+                  : 'text-slate-400 hover:bg-slate-800/70 hover:text-white'
               }`}
             >
-              <Icon className="w-5 h-5" />
-              <span className="flex-1">{item.label}</span>
-              {active && <ChevronRight className="w-4 h-4" />}
+              <div className="flex items-center gap-3">
+                <Icon className={`w-4 h-4 ${active ? 'text-white' : 'text-slate-400 group-hover:text-white'}`} />
+                <span>{item.label}</span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                {item.badge && unreadEnquiriesCount > 0 && (
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                    active ? 'bg-white text-[#e31e24]' : 'bg-[#e31e24] text-white'
+                  }`}>
+                    {unreadEnquiriesCount}
+                  </span>
+                )}
+                {active && <ChevronRight className="w-4 h-4 opacity-70" />}
+              </div>
             </Link>
           )
         })}
       </nav>
 
-      <div className="p-4 border-t border-white/10">
+      {/* Footer Info & Sign Out */}
+      <div className="p-4 border-t border-slate-800/80 space-y-2">
+        <Link
+          to="/"
+          target="_blank"
+          className="flex items-center justify-between text-xs text-slate-400 hover:text-white px-3 py-2 rounded-xl hover:bg-slate-800 transition"
+        >
+          <span className="flex items-center gap-2">
+            <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+            Open Website
+          </span>
+          <span className="text-[10px] text-slate-500">Live</span>
+        </Link>
+
         <button
           onClick={() => setAdminLogin(false)}
-          className="flex items-center gap-2 text-sm text-white/60 hover:text-danger transition w-full px-3 py-2 rounded hover:bg-danger/10"
+          className="flex items-center gap-2.5 text-xs font-semibold text-red-400 hover:text-white hover:bg-red-950/40 w-full px-3 py-2 rounded-xl transition cursor-pointer"
         >
-          <X className="w-4 h-4" />
+          <LogOut className="w-4 h-4" />
           Sign Out
         </button>
       </div>
+
     </aside>
   )
 }

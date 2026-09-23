@@ -74,5 +74,4 @@ export const mainNavItems: NavItem[] = [
       { label: 'Current Openings', path: '/career/openings' },
     ],
   },
-  { label: 'Contact Us', path: '/contact' },
 ]

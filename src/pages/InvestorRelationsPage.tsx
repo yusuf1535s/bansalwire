@@ -70,19 +70,24 @@ export default function InvestorRelationsPage() {
       />
 
       {/* Banner */}
-      <div className="bg-neutral-900 text-white py-14 px-4 text-center border-b-4 border-[#e31e24]">
-        <h1 className="text-3xl sm:text-4xl font-extrabold font-['Lato'] uppercase tracking-wide">
-          Investor Relations &amp; Governance
-        </h1>
-        <p className="text-gray-300 mt-2 text-sm max-w-2xl mx-auto font-normal">
-          Committed to utmost corporate governance, stakeholder transparency, and sustainable financial growth.
-        </p>
+      <div className="bg-white py-4 sm:py-5 px-4 text-center border-b border-gray-100">
+        <div className="max-w-4xl mx-auto">
+          <span className="text-[#e31e24] font-bold text-[11px] sm:text-xs uppercase tracking-wider block mb-0.5">
+            Stakeholder Value &amp; Compliance
+          </span>
+          <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 font-['Lato'] tracking-tight bansal-heading-center">
+            Investor Relations &amp; Governance
+          </h1>
+          <p className="text-gray-500 mt-1.5 text-xs sm:text-[13px] max-w-xl mx-auto font-normal leading-normal">
+            Committed to utmost corporate governance, stakeholder transparency, and sustainable financial growth.
+          </p>
+        </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 font-sans">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 font-sans">
         
         {/* Key Operational Highlights */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
           <div className="bg-[#fcfcfc] p-6 rounded-xl border border-gray-200 text-center shadow-xs">
             <span className="text-xs font-bold text-gray-500 uppercase">Stainless Steel Production</span>
             <div className="text-3xl font-black text-[#e31e24] font-['Lato'] mt-1">72,176 MTPA</div>

@@ -1,23 +1,67 @@
 import { useStore } from '../store/useStore'
+import { productList } from '../components/home/ProductsSection'
 import { Product } from '../types'
-import { CheckCircle, Star, ArrowLeft } from 'lucide-react'
+import { CheckCircle, Star, ArrowLeft, Send } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { AppWrapper } from '../components/layout/AppWrapper'
 import { PageMeta } from '../components/common/PageMeta'
 import { Section, SectionHeader } from '../components/common/Section'
 
 export default function ProductDetailPage() {
-  const { id } = useParams()
+  const { id } = useParams<{ id?: string }>()
   const { products } = useStore()
-  const product = products.find((p) => p.id === id)
+
+  const cleanId = (id || '').toLowerCase().trim()
+
+  const storeProduct = products.find(
+    (p) =>
+      p.id === id ||
+      p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').includes(cleanId) ||
+      p.category.toLowerCase().replace(/[^a-z0-9]+/g, '-').includes(cleanId)
+  )
+
+  const homeProduct = productList.find(
+    (p) =>
+      p.id === id ||
+      p.slug === id ||
+      p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').includes(cleanId) ||
+      p.category.toLowerCase().replace(/[^a-z0-9]+/g, '-').includes(cleanId)
+  )
+
+  const product = storeProduct || (homeProduct ? {
+    id: homeProduct.id,
+    name: homeProduct.name,
+    category: homeProduct.category,
+    subCategory: homeProduct.category,
+    description: homeProduct.description,
+    image: homeProduct.image,
+    specifications: homeProduct.features,
+    applications: ['Automotive', 'Power & Transmission', 'Infrastructure', 'General Engineering']
+  } : null)
 
   if (!product) {
     return (
       <AppWrapper>
-        <Section className="text-center">
-          <h2 className="text-2xl font-bold">Product Not Found</h2>
-          <Link to="/products" className="text-accent mt-4 inline-block">Back to Products</Link>
-        </Section>
+        <div className="max-w-3xl mx-auto py-16 px-4 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 font-['Lato']">Product / Specification Catalog</h2>
+          <p className="text-sm text-gray-600 mt-2">
+            Explore our comprehensive range of over 3,000 precision wire SKUs or submit a custom specification inquiry.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              to="/products"
+              className="bg-[#e31e24] text-white font-bold px-6 py-2.5 rounded-lg text-xs uppercase tracking-wider hover:bg-[#b81419] transition"
+            >
+              Browse Wire Catalog
+            </Link>
+            <Link
+              to="/contact"
+              className="bg-gray-100 text-gray-800 font-bold px-6 py-2.5 rounded-lg text-xs uppercase tracking-wider hover:bg-gray-200 transition"
+            >
+              Submit Custom RFQ
+            </Link>
+          </div>
+        </div>
       </AppWrapper>
     )
   }
@@ -32,14 +76,25 @@ export default function ProductDetailPage() {
               <ArrowLeft className="w-4 h-4" /> Back to Products
             </Link>
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-bg-light rounded-xl h-64 flex items-center justify-center border border-border-light">
-                <div className="w-24 h-24 bg-black/10 rounded-full flex items-center justify-center">
-                  <span className="text-black font-bold text-4xl">{product.name.charAt(0)}</span>
-                </div>
+              <div className="bg-white rounded-xl overflow-hidden h-72 border border-gray-200 shadow-xs flex items-center justify-center">
+                {product.image ? (
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = '/images/bansal/DSC_4109-1-scaled.jpg'
+                    }}
+                  />
+                ) : (
+                  <div className="w-20 h-20 bg-red-50 text-[#e31e24] rounded-full flex items-center justify-center font-bold text-3xl font-['Lato']">
+                    {product.name.charAt(0)}
+                  </div>
+                )}
               </div>
               <div>
-                <span className="text-accent text-sm font-medium uppercase">{product.category}</span>
-                <h1 className="text-3xl font-bold text-text-primary mt-2">{product.name}</h1>
+                <span className="text-[#e31e24] text-xs font-bold uppercase tracking-wider">{product.category}</span>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 font-['Lato'] mt-1">{product.name}</h1>
                 <p className="text-text-secondary mt-4 leading-relaxed">{product.description}</p>
                 <div className="flex gap-4 mt-6">
                   {product.applications?.map((app) => (

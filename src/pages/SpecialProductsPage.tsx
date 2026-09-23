@@ -13,26 +13,31 @@ export default function SpecialProductsPage() {
       />
       
       {/* Banner */}
-      <div className="bg-neutral-900 text-white py-14 px-4 text-center border-b-4 border-[#e31e24]">
-        <h1 className="text-3xl sm:text-4xl font-extrabold font-['Lato'] uppercase tracking-wide">
-          Special Products Portfolio
-        </h1>
-        <p className="text-gray-300 mt-2 text-sm max-w-2xl mx-auto font-normal">
-          High-performance customized wire solutions engineered for rigorous industrial demands.
-        </p>
+      <div className="bg-white py-4 sm:py-5 px-4 text-center border-b border-gray-100">
+        <div className="max-w-4xl mx-auto">
+          <span className="text-[#e31e24] font-bold text-[11px] sm:text-xs uppercase tracking-wider block mb-0.5">
+            Niche Engineering Portfolio
+          </span>
+          <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 font-['Lato'] tracking-tight bansal-heading-center">
+            Special Products Portfolio
+          </h1>
+          <p className="text-gray-500 mt-1.5 text-xs sm:text-[13px] max-w-xl mx-auto font-normal leading-normal">
+            High-performance customized wire solutions engineered for rigorous industrial demands.
+          </p>
+        </div>
       </div>
 
       <SpecialProductsSection />
 
       {/* Building Materials Deep Dive */}
-      <section className="py-16 bg-gray-50 border-t border-gray-200 font-sans">
+      <section className="py-8 sm:py-10 bg-gray-50 border-t border-gray-200 font-sans">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="text-[#e31e24] font-bold text-xs uppercase tracking-widest">Construction &amp; Structural</span>
-            <h2 className="text-3xl font-extrabold text-gray-900 font-['Lato'] mt-1 bansal-heading-center">
+          <div className="text-center max-w-3xl mx-auto mb-8">
+            <span className="text-[#e31e24] font-bold text-[11px] sm:text-xs uppercase tracking-wider block mb-0.5">Construction &amp; Structural</span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 font-['Lato'] tracking-tight bansal-heading-center">
               Engineered Building Material Products
             </h2>
-            <p className="text-gray-600 mt-4 text-sm font-normal">
+            <p className="text-gray-500 mt-2 text-xs sm:text-sm font-normal">
               High tensile masonry fasteners, wall ties, anchor bolts, and connector hooks manufactured under strict ISO quality standards.
             </p>
           </div>

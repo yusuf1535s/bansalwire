@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
 import ProductsPage from './pages/ProductsPage'
@@ -27,13 +27,18 @@ function App() {
       <Route path="/about" element={<AboutPage />} />
       <Route path="/about/:slug" element={<AboutPage />} />
       <Route path="/products" element={<ProductsPage />} />
-      <Route path="/products/:id" element={<ProductDetailPage />} />
+      <Route path="/products/:slug" element={<ProductsPage />} />
+      <Route path="/product/:id" element={<ProductDetailPage />} />
+      <Route path="/products/item/:id" element={<ProductDetailPage />} />
       <Route path="/special-products" element={<SpecialProductsPage />} />
       <Route path="/special-products/:slug" element={<SpecialProductsPage />} />
       <Route path="/investor-relations" element={<InvestorRelationsPage />} />
+      <Route path="/investor-relations/:slug" element={<InvestorRelationsPage />} />
       <Route path="/quality" element={<QualityPage />} />
       <Route path="/career" element={<CareerPage />} />
+      <Route path="/career/:slug" element={<CareerPage />} />
       <Route path="/contact" element={<ContactPage />} />
+      <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
       <Route path="/admin/login" element={<AdminLoginPage />} />
       <Route path="/admin/dashboard" element={<DashboardPage />} />
       <Route path="/admin/products" element={<ProductsAdminPage />} />

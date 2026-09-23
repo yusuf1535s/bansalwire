@@ -49,16 +49,21 @@ export default function QualityPage() {
       />
       
       {/* Banner */}
-      <div className="bg-neutral-900 text-white py-14 px-4 text-center border-b-4 border-[#e31e24]">
-        <h1 className="text-3xl sm:text-4xl font-extrabold font-['Lato'] uppercase tracking-wide">
-          Quality &amp; System Approvals
-        </h1>
-        <p className="text-gray-300 mt-2 text-sm max-w-2xl mx-auto font-normal">
-          Uncompromising precision engineering and testing across every millimetre of wire produced.
-        </p>
+      <div className="bg-white py-4 sm:py-5 px-4 text-center border-b border-gray-100">
+        <div className="max-w-4xl mx-auto">
+          <span className="text-[#e31e24] font-bold text-[11px] sm:text-xs uppercase tracking-wider block mb-0.5">
+            Certifications &amp; Standards
+          </span>
+          <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 font-['Lato'] tracking-tight bansal-heading-center">
+            Quality &amp; System Approvals
+          </h1>
+          <p className="text-gray-500 mt-1.5 text-xs sm:text-[13px] max-w-xl mx-auto font-normal leading-normal">
+            Uncompromising precision engineering and testing across every millimetre of wire produced.
+          </p>
+        </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 font-sans space-y-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 font-sans space-y-10">
         
         {/* Quality Philosophy */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">

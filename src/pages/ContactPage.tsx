@@ -1,20 +1,35 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { AppWrapper } from '../components/layout/AppWrapper'
 import { PageMeta } from '../components/common/PageMeta'
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, Building, Globe } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, ShieldCheck } from 'lucide-react'
 import { useStore } from '../store/useStore'
 
 export default function ContactPage() {
+  const [searchParams] = useSearchParams()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    country: 'India',
+    company: '',
     category: 'Stainless Steel (SS)',
+    diameter: '',
     message: ''
   })
   const [submitted, setSubmitted] = useState(false)
   const addEnquiry = useStore((state) => state.addEnquiry)
+
+  useEffect(() => {
+    const productParam = searchParams.get('product')
+    const segmentParam = searchParams.get('segment')
+    if (productParam || segmentParam) {
+      setFormData((prev) => ({
+        ...prev,
+        category: segmentParam || prev.category,
+        message: productParam ? `Inquiring for: ${productParam}. Please provide technical datasheet, pricing, and minimum order quantity.` : prev.message
+      }))
+    }
+  }, [searchParams])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -25,10 +40,10 @@ export default function ContactPage() {
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
-      company: 'Direct Web Inquiry',
-      country: formData.country,
+      company: formData.company || 'Website Visitor',
+      country: 'India',
       productCategory: formData.category,
-      productSubCategory: 'Contact Page Inquiry',
+      productSubCategory: formData.diameter ? `Diameter: ${formData.diameter}` : 'Contact Page Inquiry',
       message: formData.message,
       status: 'pending',
       createdAt: new Date().toISOString()
@@ -41,11 +56,12 @@ export default function ContactPage() {
         name: '',
         email: '',
         phone: '',
-        country: 'India',
+        company: '',
         category: 'Stainless Steel (SS)',
+        diameter: '',
         message: ''
       })
-    }, 3500)
+    }, 4000)
   }
 
   return (
@@ -54,201 +70,241 @@ export default function ContactPage() {
         title="Contact Us | Bansal Wire Industries Ltd."
         description="Contact Bansal Wire Industries Ltd. corporate office in Shastri Nagar New Delhi, phone 011-23651890-93, email info@bansal-group.com."
       />
-      
-      {/* Banner */}
-      <div className="bg-neutral-900 text-white py-14 px-4 text-center border-b-4 border-[#e31e24]">
-        <h1 className="text-3xl sm:text-4xl font-extrabold font-['Lato'] uppercase tracking-wide">
-          Contact Us
-        </h1>
-        <p className="text-gray-300 mt-2 text-sm max-w-2xl mx-auto font-normal">
-          Get in touch with our technical sales, export division, or customer care team.
-        </p>
+
+      {/* Clean Header */}
+      <div className="bg-white py-4 sm:py-5 px-4 text-center border-b border-gray-100 font-sans">
+        <div className="max-w-3xl mx-auto">
+          <span className="text-[#e31e24] font-bold text-[11px] sm:text-xs uppercase tracking-wider block mb-0.5">
+            Direct Communication
+          </span>
+          <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 font-['Lato'] tracking-tight bansal-heading-center">
+            Contact Us
+          </h1>
+          <p className="text-gray-500 mt-1.5 text-xs sm:text-[13px] font-normal max-w-xl mx-auto leading-normal">
+            Get in touch with our technical sales, export division, or customer care team.
+          </p>
+        </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 font-sans">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <div className="bg-gray-50/50 py-6 sm:py-8 font-sans">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           
-          {/* Contact Details (5 cols) */}
-          <div className="lg:col-span-5 space-y-6">
-            <div>
-              <span className="text-[#e31e24] font-bold text-xs uppercase tracking-widest">Connect With Us</span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 font-['Lato'] mt-1 bansal-heading">
-                Corporate &amp; Plant Offices
+          {/* 1. FULL-WIDTH Direct Enquiry / RFQ Form (FIRST) */}
+          <div className="w-full bg-white p-7 sm:p-10 rounded-2xl border border-gray-200 shadow-sm">
+            <div className="border-b border-gray-100 pb-5 mb-8 text-center sm:text-left">
+              <span className="text-[#e31e24] font-bold text-xs uppercase tracking-wider block mb-1">
+                Fast-Track Communication
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-['Lato']">
+                Submit Direct Enquiry / RFQ
               </h2>
+              <p className="text-xs sm:text-sm text-gray-500 mt-1 font-normal">
+                Fill in your details below to receive pricing, technical datasheets, or product samples.
+              </p>
             </div>
-
-            <div className="space-y-4 text-xs sm:text-sm">
-              <div className="bg-white p-5 rounded-xl border border-gray-200 flex items-start gap-4 shadow-xs">
-                <div className="w-10 h-10 rounded-lg bg-red-100 text-[#e31e24] flex items-center justify-center shrink-0">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div>
-                  <strong className="text-gray-900 block font-semibold mb-0.5">Corporate Headquarters:</strong>
-                  <p className="text-gray-600 font-normal">
-                    F-3, Main Road, Shastri Nagar, New Delhi – 110052, India
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white p-5 rounded-xl border border-gray-200 flex items-start gap-4 shadow-xs">
-                <div className="w-10 h-10 rounded-lg bg-red-100 text-[#e31e24] flex items-center justify-center shrink-0">
-                  <Phone className="w-5 h-5" />
-                </div>
-                <div>
-                  <strong className="text-gray-900 block font-semibold mb-0.5">Telephone Numbers:</strong>
-                  <p className="text-gray-600 font-normal">
-                    <a href="tel:011-23651890" className="hover:text-[#e31e24]">011-23651890</a> / <a href="tel:011-23651891" className="hover:text-[#e31e24]">91</a> / <a href="tel:011-23651892" className="hover:text-[#e31e24]">92</a> / <a href="tel:011-23651893" className="hover:text-[#e31e24]">93</a>
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white p-5 rounded-xl border border-gray-200 flex items-start gap-4 shadow-xs">
-                <div className="w-10 h-10 rounded-lg bg-red-100 text-[#e31e24] flex items-center justify-center shrink-0">
-                  <Mail className="w-5 h-5" />
-                </div>
-                <div>
-                  <strong className="text-gray-900 block font-semibold mb-0.5">Official Email Addresses:</strong>
-                  <p className="text-gray-600 font-normal">
-                    General: <a href="mailto:info@bansal-group.com" className="text-[#e31e24]">info@bansal-group.com</a><br />
-                    Exports: <a href="mailto:exports@bansalwire.com" className="text-[#e31e24]">exports@bansalwire.com</a>
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white p-5 rounded-xl border border-gray-200 flex items-start gap-4 shadow-xs">
-                <div className="w-10 h-10 rounded-lg bg-red-100 text-[#e31e24] flex items-center justify-center shrink-0">
-                  <Building className="w-5 h-5" />
-                </div>
-                <div>
-                  <strong className="text-gray-900 block font-semibold mb-0.5">Manufacturing Plants:</strong>
-                  <p className="text-gray-600 font-normal">
-                    Units I - IV: Ghaziabad, UP<br />
-                    Mega Unit: Dadri, Uttar Pradesh
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact / RFQ Form (7 cols) */}
-          <div className="lg:col-span-7 bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
-            <h3 className="text-2xl font-bold text-gray-900 font-['Lato'] mb-2 bansal-heading">
-              Submit Direct Requirement / RFQ
-            </h3>
-            <p className="text-xs text-gray-600 mb-6 font-normal">
-              Fill out the form below to receive detailed technical specifications, test certificates, or quotation.
-            </p>
 
             {submitted ? (
-              <div className="py-12 text-center space-y-3">
-                <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto">
-                  <CheckCircle2 className="w-10 h-10" />
-                </div>
-                <h4 className="text-2xl font-bold text-gray-900">Enquiry Received Successfully!</h4>
-                <p className="text-sm text-gray-600 max-w-md mx-auto">
-                  Thank you for contacting Bansal Wire Industries. Our technical sales engineer will get back to you within 24 business hours.
+              <div className="py-14 text-center bg-green-50 rounded-2xl border border-green-200">
+                <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-3" />
+                <h3 className="text-2xl font-bold text-green-900 font-['Lato']">Enquiry Submitted Successfully!</h3>
+                <p className="text-sm text-green-700 max-w-lg mx-auto mt-2 font-normal leading-relaxed">
+                  Thank you for contacting Bansal Wire Industries Ltd. Our technical sales engineering team will review your specifications and get in touch within 24 business hours.
                 </p>
+                <button
+                  onClick={() => setSubmitted(false)}
+                  className="mt-6 bg-[#e31e24] text-white text-xs font-bold px-7 py-3 rounded-xl hover:bg-[#b81419] transition uppercase tracking-wider shadow cursor-pointer"
+                >
+                  Submit Another Requirement
+                </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                
+                {/* Row 1: Name, Email, Phone */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   <div>
-                    <label className="block font-semibold text-gray-700 mb-1">Your Name *</label>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                      Your Name <span className="text-red-500">*</span>
+                    </label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. John Doe"
+                      placeholder="e.g. Rahul Sharma"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-gray-50 border border-gray-300 px-3.5 py-2.5 rounded focus:outline-none focus:ring-1 focus:ring-[#e31e24]"
+                      className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl text-xs sm:text-sm text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#e31e24]/30 focus:border-[#e31e24] transition"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-gray-700 mb-1">Work Email *</label>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                      Work Email <span className="text-red-500">*</span>
+                    </label>
                     <input
                       type="email"
                       required
-                      placeholder="john@company.com"
+                      placeholder="e.g. rahul@company.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full bg-gray-50 border border-gray-300 px-3.5 py-2.5 rounded focus:outline-none focus:ring-1 focus:ring-[#e31e24]"
+                      className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl text-xs sm:text-sm text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#e31e24]/30 focus:border-[#e31e24] transition"
                     />
                   </div>
-                </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block font-semibold text-gray-700 mb-1">Phone Number *</label>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                      Phone / WhatsApp <span className="text-red-500">*</span>
+                    </label>
                     <input
                       type="tel"
                       required
-                      placeholder="+91 Mobile number"
+                      placeholder="e.g. +91 98765 43210"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full bg-gray-50 border border-gray-300 px-3.5 py-2.5 rounded focus:outline-none focus:ring-1 focus:ring-[#e31e24]"
+                      className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl text-xs sm:text-sm text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#e31e24]/30 focus:border-[#e31e24] transition"
+                    />
+                  </div>
+                </div>
+
+                {/* Row 2: Company, Product Category, Diameter/Grade */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                      Company Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. AutoTech India Pvt Ltd"
+                      value={formData.company}
+                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl text-xs sm:text-sm text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#e31e24]/30 focus:border-[#e31e24] transition"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-gray-700 mb-1">Country</label>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                      Product Segment <span className="text-red-500">*</span>
+                    </label>
                     <select
-                      value={formData.country}
-                      onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                      className="w-full bg-gray-50 border border-gray-300 px-3.5 py-2.5 rounded focus:outline-none focus:ring-1 focus:ring-[#e31e24]"
+                      value={formData.category}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                      className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl text-xs sm:text-sm text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#e31e24]/30 focus:border-[#e31e24] transition cursor-pointer"
                     >
-                      <option value="India">India</option>
-                      <option value="USA">United States</option>
-                      <option value="UK">United Kingdom</option>
-                      <option value="UAE">United Arab Emirates</option>
-                      <option value="Germany">Germany</option>
-                      <option value="Other">Other Country</option>
+                      <option value="Stainless Steel (SS)">Stainless Steel (SS) Wires</option>
+                      <option value="High Carbon Wires">High Carbon Steel Wires</option>
+                      <option value="Mild Steel Wires">Mild Steel (Low Carbon) Wires</option>
+                      <option value="Galvanized Wires">Galvanized Wires</option>
+                      <option value="Profile & Shaped">Profile &amp; Shaped Wires</option>
+                      <option value="Cable Armouring">Cable Armouring Wires &amp; Strips</option>
+                      <option value="Aluminium Alloy">Aluminium Alloy Wires</option>
+                      <option value="Special Products">Special Products (Wire Rope, Bead Wire, etc.)</option>
                     </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                      Diameter / Grade
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 1.20 mm, SS 304, 20 MT"
+                      value={formData.diameter}
+                      onChange={(e) => setFormData({ ...formData, diameter: e.target.value })}
+                      className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl text-xs sm:text-sm text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#e31e24]/30 focus:border-[#e31e24] transition"
+                    />
                   </div>
                 </div>
 
+                {/* Row 3: Requirement Message */}
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Product Category *</label>
-                  <select
-                    value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full bg-gray-50 border border-gray-300 px-3.5 py-2.5 rounded focus:outline-none focus:ring-1 focus:ring-[#e31e24]"
-                  >
-                    <option value="Stainless Steel (SS)">Stainless Steel (SS) Wires</option>
-                    <option value="High Carbon Wires">High Carbon Steel Wires</option>
-                    <option value="Mild Steel Wires">Mild Steel (Low Carbon) Wires</option>
-                    <option value="Galvanized Wires">Galvanized Wires</option>
-                    <option value="Cable Armouring">Cable Armouring Wires &amp; Strips</option>
-                    <option value="Aluminium Alloy">Aluminium Alloy Wires</option>
-                    <option value="Wire Rope">Wire Rope</option>
-                    <option value="Tyre Bead">Tyre Bead Wire</option>
-                    <option value="Wire Mesh">Aluminium Alloy Wire Mesh</option>
-                    <option value="SS Scrubbers">Stainless Steel Scrubbers</option>
-                    <option value="Building Material">Building Material (Anchor Bolts / Ties)</option>
-                    <option value="Barbed Wire">Barbed Wire</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Requirement Details</label>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                    Requirement / Diameter / Specifications
+                  </label>
                   <textarea
                     rows={4}
-                    placeholder="Enter wire size/diameter (mm), tensile grade, delivery location, or monthly tonnage..."
+                    placeholder="Specify required diameter (mm), grade (e.g. 304, 316), tensile strength, monthly quantity, packaging requirements..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full bg-gray-50 border border-gray-300 px-3.5 py-2.5 rounded focus:outline-none focus:ring-1 focus:ring-[#e31e24] resize-none"
-                  ></textarea>
+                    className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl text-xs sm:text-sm text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#e31e24]/30 focus:border-[#e31e24] transition resize-none"
+                  />
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full bg-[#e31e24] hover:bg-[#b81419] text-white font-bold py-3 px-6 rounded text-xs uppercase tracking-wider shadow-md transition flex items-center justify-center gap-2"
-                >
-                  <Send className="w-4 h-4" />
-                  Submit Request For Quotation
-                </button>
+                {/* Row 4: Full-Width Submit Button */}
+                <div>
+                  <button
+                    type="submit"
+                    className="w-full bg-[#e31e24] hover:bg-[#b81419] text-white font-bold py-4 px-6 rounded-xl text-xs sm:text-sm uppercase tracking-wider shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <Send className="w-4 h-4" /> Submit Requirement To Sales Team
+                  </button>
+                </div>
+
+                <div className="pt-2 text-center text-xs text-gray-400 flex items-center justify-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#e31e24]" />
+                  <span>ISO 9001:2015, ISO 14001:2015 &amp; IATF 16949:2016 Certified Manufacturer</span>
+                </div>
               </form>
             )}
+          </div>
+
+          {/* 2. Contact Info Cards (BELOW the form) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-red-50 text-[#e31e24] flex items-center justify-center shrink-0">
+                <MapPin className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 text-xs uppercase tracking-wider text-gray-400">
+                  Corporate HQ
+                </h3>
+                <p className="text-xs text-gray-800 font-medium mt-0.5 leading-relaxed">
+                  F-3, Main Road, Shastri Nagar, New Delhi – 110052
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-red-50 text-[#e31e24] flex items-center justify-center shrink-0">
+                <Phone className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 text-xs uppercase tracking-wider text-gray-400">
+                  Direct Lines
+                </h3>
+                <p className="text-xs text-gray-800 font-medium mt-0.5">
+                  <a href="tel:011-23651890" className="hover:text-[#e31e24]">011-23651890</a> / <a href="tel:011-23651891" className="hover:text-[#e31e24]">91</a> / <a href="tel:011-23651892" className="hover:text-[#e31e24]">92</a> / <a href="tel:011-23651893" className="hover:text-[#e31e24]">93</a>
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-red-50 text-[#e31e24] flex items-center justify-center shrink-0">
+                <Mail className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 text-xs uppercase tracking-wider text-gray-400">
+                  Official Email
+                </h3>
+                <p className="text-xs text-gray-800 font-medium mt-0.5">
+                  <a href="mailto:info@bansal-group.com" className="hover:text-[#e31e24]">info@bansal-group.com</a>
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-red-50 text-[#e31e24] flex items-center justify-center shrink-0">
+                <Clock className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 text-xs uppercase tracking-wider text-gray-400">
+                  Working Hours
+                </h3>
+                <p className="text-xs text-gray-800 font-medium mt-0.5">
+                  Mon – Sat: 9:00 AM – 6:00 PM
+                </p>
+              </div>
+            </div>
+
           </div>
 
         </div>

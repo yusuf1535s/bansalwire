@@ -129,42 +129,55 @@ export function ProductsSection() {
       : productList.filter((p) => p.category.toLowerCase().includes(activeTab.toLowerCase()))
 
   return (
-    <section className="py-16 bg-[#f7f7f7] font-sans">
+    <section className="py-16 bg-slate-50 dark:bg-[#0b0f19] font-sans transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Major Sectors Section */}
         <div className="mb-20">
           <div className="text-center max-w-3xl mx-auto mb-10">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#111111] uppercase tracking-wide font-['Lato'] bansal-heading-center">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white uppercase tracking-wide font-['Lato'] bansal-heading-center">
               Major Sectors
             </h2>
-            <p className="text-gray-600 mt-4 text-sm sm:text-base font-normal">
+            <p className="text-slate-600 dark:text-slate-300 mt-4 text-sm sm:text-base font-normal">
               We are working in all possible verticals of commercial industries and are currently serving the wire needs of significant industries:
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            {majorSectors.map((sector) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {majorSectors.map((sector, index) => (
               <div
                 key={sector.name}
-                className="bg-white rounded-xl p-5 border border-gray-200 shadow-xs hover:shadow-md hover:border-[#e31e24]/40 transition-all duration-200 flex flex-col items-center text-center group"
+                className="bg-white dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-[#e31e24]/40 dark:hover:border-[#e31e24]/60 transition-all duration-300 flex flex-col overflow-hidden group hover:-translate-y-1"
               >
-                <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center p-2 mb-3 border border-gray-100 group-hover:scale-110 transition-transform">
+                {/* Large Visual Image Display */}
+                <div className="relative h-48 sm:h-52 bg-gradient-to-b from-slate-50 to-slate-100/70 dark:from-slate-800/40 dark:to-slate-900/60 p-4 flex items-center justify-center border-b border-slate-100 dark:border-slate-800/60 overflow-hidden">
+                  <span className="absolute top-3 left-3 text-[10px] font-black tracking-widest text-slate-400 dark:text-slate-500 bg-white/80 dark:bg-slate-800/80 px-2 py-0.5 rounded-md backdrop-blur-xs">
+                    0{index + 1}
+                  </span>
                   <img
                     src={sector.iconImg}
                     alt={sector.name}
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src = '/images/bansal/1-1.png'
                     }}
-                    className="w-12 h-12 object-contain"
+                    className="w-full h-full object-contain filter drop-shadow-md group-hover:scale-108 transition-transform duration-300"
                   />
                 </div>
-                <h4 className="font-bold text-gray-900 font-['Lato'] text-base mb-1.5 group-hover:text-[#e31e24] transition-colors">
-                  {sector.name}
-                </h4>
-                <p className="text-xs text-gray-500 font-normal leading-relaxed line-clamp-2">
-                  {sector.description}
-                </p>
+
+                {/* Content */}
+                <div className="p-5 flex flex-col flex-1">
+                  <h4 className="font-bold text-slate-900 dark:text-white font-['Lato'] text-lg mb-2 group-hover:text-[#e31e24] dark:group-hover:text-[#ff6b6e] transition-colors">
+                    {sector.name}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-normal leading-relaxed flex-1">
+                    {sector.description}
+                  </p>
+                  
+                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-[#e31e24] dark:text-[#ff6b6e]">
+                    <span>Key Applications</span>
+                    <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -172,10 +185,10 @@ export function ProductsSection() {
 
         {/* Product Showcase Header */}
         <div className="text-center max-w-3xl mx-auto mb-8">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#111111] uppercase tracking-wide font-['Lato'] bansal-heading-center">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white uppercase tracking-wide font-['Lato'] bansal-heading-center">
             Our Products
           </h2>
-          <p className="text-gray-600 mt-4 text-sm sm:text-base font-normal">
+          <p className="text-slate-600 dark:text-slate-300 mt-4 text-sm sm:text-base font-normal">
             Precision manufactured engineered wires with custom chemical &amp; physical specifications.
           </p>
 
@@ -192,10 +205,10 @@ export function ProductsSection() {
               <button
                 key={tab.value}
                 onClick={() => setActiveTab(tab.value)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition uppercase tracking-wider ${
+                className={`px-4 py-1.5 rounded-full text-xs font-bold transition uppercase tracking-wider cursor-pointer ${
                   activeTab === tab.value
                     ? 'bg-[#e31e24] text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-200 border border-gray-200'
+                    : 'bg-white dark:bg-[#111827] text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-700'
                 }`}
               >
                 {tab.label}
@@ -209,11 +222,11 @@ export function ProductsSection() {
           {filteredProducts.map((product) => (
             <div
               key={product.id}
-              className="bansal-card bg-white rounded-xl overflow-hidden border border-gray-200 flex flex-col justify-between group"
+              className="bansal-card bg-white dark:bg-[#111827] rounded-xl overflow-hidden border border-gray-200 dark:border-slate-800 flex flex-col justify-between group"
             >
               <div>
                 {/* Product Image Container */}
-                <div className="relative h-52 bg-gray-100 overflow-hidden border-b border-gray-100 flex items-center justify-center p-4">
+                <div className="relative h-52 bg-gray-100 dark:bg-[#151d2e] overflow-hidden border-b border-gray-100 dark:border-slate-800 flex items-center justify-center p-4">
                   <img
                     src={product.image}
                     alt={product.name}
@@ -229,16 +242,16 @@ export function ProductsSection() {
 
                 {/* Product Info */}
                 <div className="p-5">
-                  <h3 className="text-base font-bold text-gray-900 group-hover:text-[#e31e24] transition-colors font-['Lato']">
+                  <h3 className="text-base font-bold text-gray-900 dark:text-white group-hover:text-[#e31e24] dark:group-hover:text-[#ff6b6e] transition-colors font-['Lato']">
                     {product.name}
                   </h3>
-                  <p className="text-xs text-gray-600 mt-2 line-clamp-3 font-normal leading-relaxed">
+                  <p className="text-xs text-gray-600 dark:text-slate-300 mt-2 line-clamp-3 font-normal leading-relaxed">
                     {product.description}
                   </p>
 
                   <div className="mt-4 space-y-1">
                     {product.features.slice(0, 2).map((feat, i) => (
-                      <div key={i} className="flex items-center gap-1.5 text-[11px] text-gray-500 font-normal">
+                      <div key={i} className="flex items-center gap-1.5 text-[11px] text-gray-500 dark:text-slate-400 font-normal">
                         <CheckCircle2 className="w-3.5 h-3.5 text-[#e31e24] shrink-0" />
                         <span>{feat}</span>
                       </div>
@@ -248,16 +261,16 @@ export function ProductsSection() {
               </div>
 
               {/* Action Button */}
-              <div className="px-5 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between">
+              <div className="px-5 pb-5 pt-2 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between">
                 <Link
                   to={`/products`}
-                  className="text-xs font-bold text-[#e31e24] hover:text-[#b81419] flex items-center gap-1 uppercase tracking-wider"
+                  className="text-xs font-bold text-[#e31e24] hover:text-[#b81419] dark:hover:text-[#ff6b6e] flex items-center gap-1 uppercase tracking-wider"
                 >
                   View Details <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
                 <Link
                   to="/contact"
-                  className="text-[11px] bg-gray-100 hover:bg-[#e31e24] hover:text-white text-gray-700 px-3 py-1 rounded font-semibold transition"
+                  className="text-[11px] bg-gray-100 dark:bg-slate-800 hover:bg-[#e31e24] dark:hover:bg-[#e31e24] hover:text-white dark:hover:text-white text-gray-700 dark:text-slate-200 px-3 py-1 rounded font-semibold transition"
                 >
                   Get Quote
                 </Link>

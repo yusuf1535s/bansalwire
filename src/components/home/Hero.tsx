@@ -47,27 +47,27 @@ export function Hero() {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
 
   return (
-    <div className="w-full bg-white font-sans">
+    <div className="w-full bg-white dark:bg-[#0b0f19] font-sans transition-colors duration-300">
       
       {/* 1. CLEAN TOP HEADING SECTION (NO BADGE AT TOP) */}
       <div className="pt-8 pb-5 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
         {/* Main Heading directly at Top */}
-        <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-black text-slate-900 leading-tight font-['Lato'] tracking-tight uppercase">
+        <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-black text-slate-900 dark:text-white leading-tight font-['Lato'] tracking-tight uppercase">
           Stainless Steel Wire Suppliers &amp; Exporters in India
         </h1>
 
         {/* Top Subtitle */}
-        <p className="mt-2 text-sm sm:text-base text-slate-600 max-w-3xl mx-auto font-normal">
+        <p className="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-3xl mx-auto font-normal">
           Precision engineered steel wire solutions catering to automotive, engineering, infrastructure, power transmission, and agriculture industries globally.
         </p>
       </div>
 
-      {/* 2. FULL-WIDTH HERO IMAGE CAROUSEL (100% SHARP & CLEAN) */}
+      {/* 2. FULL-WIDTH HERO IMAGE CAROUSEL */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-        <div className="relative rounded-2xl overflow-hidden shadow-xl border border-slate-200 bg-slate-950 group">
+        <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111827]">
           
           {/* Main Full Image Viewport */}
-          <div className="relative h-[320px] sm:h-[440px] md:h-[500px] lg:h-[540px] w-full overflow-hidden">
+          <div className="relative h-[320px] sm:h-[440px] md:h-[500px] lg:h-[540px] w-full overflow-hidden bg-slate-100 dark:bg-slate-900">
             {heroSlides.map((slide, index) => (
               <div
                 key={slide.id}
@@ -81,97 +81,101 @@ export function Hero() {
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src = '/images/bansal/Wires-320x320.jpg'
                   }}
-                  className="w-full h-full object-cover transition-transform duration-7000 scale-100 group-hover:scale-102"
+                  className="w-full h-full object-cover"
                 />
-
-                {/* Subtle bottom edge gradient to frame image smoothly */}
-                <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none" />
-                
-                {/* Floating Image Label at Bottom Corner */}
-                <div className="absolute bottom-5 left-5 right-5 z-20 flex items-center justify-between pointer-events-none">
-                  <div className="bg-black/80 backdrop-blur-md text-white px-4 py-2 rounded-xl border border-white/20 shadow-lg">
-                    <span className="text-[10px] font-bold text-[#e31e24] uppercase tracking-wider block">{slide.badge}</span>
-                    <span className="text-sm sm:text-base font-bold font-['Lato'] drop-shadow">{slide.title}</span>
-                  </div>
-
-                  <div className="hidden sm:block text-right bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-white/90 text-xs">
-                    Slide {index + 1} of {heroSlides.length}
-                  </div>
-                </div>
               </div>
             ))}
+
+            {/* Left / Right Carousel Controls */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/90 dark:bg-slate-900/90 hover:bg-[#e31e24] dark:hover:bg-[#e31e24] text-slate-800 dark:text-slate-100 hover:text-white shadow-xl backdrop-blur-md transition-all duration-200 border border-slate-200 dark:border-slate-700 cursor-pointer"
+              aria-label="Previous Slide"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/90 dark:bg-slate-900/90 hover:bg-[#e31e24] dark:hover:bg-[#e31e24] text-slate-800 dark:text-slate-100 hover:text-white shadow-xl backdrop-blur-md transition-all duration-200 border border-slate-200 dark:border-slate-700 cursor-pointer"
+              aria-label="Next Slide"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
 
-          {/* Left / Right Carousel Controls */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/90 hover:bg-[#e31e24] text-slate-800 hover:text-white shadow-xl backdrop-blur-md transition-all duration-200 border border-slate-200"
-            aria-label="Previous Slide"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/90 hover:bg-[#e31e24] text-slate-800 hover:text-white shadow-xl backdrop-blur-md transition-all duration-200 border border-slate-200"
-            aria-label="Next Slide"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
+          {/* Caption & Controls Bar BELOW Image */}
+          <div className="bg-white dark:bg-[#111827] px-5 sm:px-8 py-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div>
+              <span className="text-[11px] font-bold text-[#e31e24] dark:text-[#ff4d52] uppercase tracking-wider block">
+                {heroSlides[currentSlide].badge}
+              </span>
+              <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white font-['Lato'] mt-0.5">
+                {heroSlides[currentSlide].title}
+              </h3>
+            </div>
 
-          {/* Slide Indicator Dots */}
-          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
-            {heroSlides.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentSlide(idx)}
-                className={`h-2.5 transition-all duration-300 rounded-full ${
-                  idx === currentSlide ? 'w-8 bg-[#e31e24]' : 'w-2.5 bg-white/60 hover:bg-white'
-                }`}
-                aria-label={`Slide ${idx + 1}`}
-              />
-            ))}
+            <div className="flex items-center gap-4 self-end sm:self-center">
+              {/* Slide Indicator Dots */}
+              <div className="flex items-center gap-1.5">
+                {heroSlides.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentSlide(idx)}
+                    className={`h-2.5 transition-all duration-300 rounded-full cursor-pointer ${
+                      idx === currentSlide ? 'w-7 bg-[#e31e24]' : 'w-2.5 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600'
+                    }`}
+                    aria-label={`Slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 font-mono">
+                {currentSlide + 1} / {heroSlides.length}
+              </span>
+            </div>
           </div>
+
         </div>
       </div>
 
       {/* 3. BOTTOM DESCRIPTION, TRUST BADGE & CONVERSION ACTIONS */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div className="bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             
             {/* Description & Trust Badge */}
             <div className="lg:col-span-8 space-y-3">
               
               {/* Trust Badge placed here at the bottom */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-xs">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white dark:bg-[#1a233a] border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-xs">
                 <Award className="w-3.5 h-3.5 text-[#e31e24]" />
                 <span>Trusted Strength Since 1938</span>
-                <span className="text-slate-300">•</span>
-                <span className="text-slate-600 font-medium">India’s #1 Stainless Steel Wire Manufacturer</span>
+                <span className="text-slate-300 dark:text-slate-600">•</span>
+                <span className="text-slate-600 dark:text-slate-300 font-medium">India’s #1 Stainless Steel Wire Manufacturer</span>
               </div>
 
               <div className="flex items-center gap-2 pt-1">
                 <span className="w-2 h-2 rounded-full bg-[#e31e24]"></span>
-                <span className="text-xs font-bold text-slate-800 uppercase tracking-wider font-['Lato']">
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-100 uppercase tracking-wider font-['Lato']">
                   Bansal Wire Industries Ltd. (BWIL)
                 </span>
               </div>
 
-              <p className="text-sm text-slate-700 leading-relaxed font-normal">
-                Operating with a production capacity of <strong>72,176 MTPA</strong> of Stainless Steel Wires and <strong>206,466 MTPA</strong> total steel wire volume in India. We manufacture over <strong>3,000 SKUs</strong> (0.04 mm to 15.65 mm) for automotive, general engineering, power transmission, agriculture, and construction sectors across 50+ export countries.
+              <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+                Operating with a production capacity of <strong className="text-slate-900 dark:text-white">72,176 MTPA</strong> of Stainless Steel Wires and <strong className="text-slate-900 dark:text-white">206,466 MTPA</strong> total steel wire volume in India. We manufacture over <strong className="text-slate-900 dark:text-white">3,000 SKUs</strong> (0.04 mm to 15.65 mm) for automotive, general engineering, power transmission, agriculture, and construction sectors across 50+ export countries.
               </p>
               
               {/* Feature Pills */}
               <div className="flex flex-wrap gap-2 pt-1">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white dark:bg-[#1a233a] border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#e31e24]" />
                   Cost-Plus Model (Price Immunity)
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white dark:bg-[#1a233a] border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#e31e24]" />
                   ISO 9001:2015 &amp; IATF 16949
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white dark:bg-[#1a233a] border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#e31e24]" />
                   Zero Concentration (&lt;5% per client)
                 </span>
@@ -189,7 +193,7 @@ export function Hero() {
               </Link>
               <Link
                 to="/products"
-                className="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-bold py-3 px-6 rounded-xl text-xs sm:text-sm uppercase tracking-wider text-center shadow-xs transition"
+                className="bg-white dark:bg-[#1a233a] hover:bg-slate-100 dark:hover:bg-[#222e4c] text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 font-bold py-3 px-6 rounded-xl text-xs sm:text-sm uppercase tracking-wider text-center shadow-xs transition"
               >
                 Browse 3,000+ SKUs Catalog
               </Link>
@@ -244,28 +248,28 @@ export function StatCards() {
   ]
 
   return (
-    <section className="bg-white py-6 border-y border-slate-200">
+    <section className="bg-white dark:bg-[#0b0f19] py-6 border-y border-slate-200 dark:border-slate-800 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
           {stats.map((stat, idx) => (
             <div
               key={idx}
-              className="p-4 rounded-xl bg-slate-50/80 hover:bg-white transition border border-slate-200/80 hover:border-[#e31e24]/40 hover:shadow-md group flex flex-col justify-between"
+              className="p-4 rounded-xl bg-slate-50/80 dark:bg-[#151d2e] hover:bg-white dark:hover:bg-[#1c273e] transition border border-slate-200/80 dark:border-slate-800 hover:border-[#e31e24]/40 dark:hover:border-[#e31e24]/60 hover:shadow-md group flex flex-col justify-between"
             >
               <div className="flex items-center justify-between mb-2">
-                <div className="w-8 h-8 rounded-lg bg-red-100/60 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <div className="w-8 h-8 rounded-lg bg-red-100/60 dark:bg-red-950/50 flex items-center justify-center group-hover:scale-110 transition-transform">
                   {stat.icon}
                 </div>
-                <span className="text-[10px] font-bold text-slate-400">BWI</span>
+                <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500">BWI</span>
               </div>
               <div>
-                <div className="text-xl sm:text-2xl font-black text-slate-900 font-['Lato'] tracking-tight">
+                <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-['Lato'] tracking-tight">
                   {stat.value}
                 </div>
-                <div className="text-xs font-bold text-slate-700 uppercase mt-0.5 tracking-wider">
+                <div className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase mt-0.5 tracking-wider">
                   {stat.label}
                 </div>
-                <div className="text-[11px] text-slate-500 mt-0.5 font-normal">
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 font-normal">
                   {stat.subtext}
                 </div>
               </div>

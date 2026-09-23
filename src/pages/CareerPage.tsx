@@ -83,21 +83,26 @@ export default function CareerPage() {
       />
       
       {/* Banner */}
-      <div className="bg-neutral-900 text-white py-14 px-4 text-center border-b-4 border-[#e31e24]">
-        <h1 className="text-3xl sm:text-4xl font-extrabold font-['Lato'] uppercase tracking-wide">
-          Life at Bansal Wire &amp; Careers
-        </h1>
-        <p className="text-gray-300 mt-2 text-sm max-w-2xl mx-auto font-normal">
-          Shape the future of global wire engineering with India's market leader.
-        </p>
+      <div className="bg-white py-4 sm:py-5 px-4 text-center border-b border-gray-100">
+        <div className="max-w-4xl mx-auto">
+          <span className="text-[#e31e24] font-bold text-[11px] sm:text-xs uppercase tracking-wider block mb-0.5">
+            Work With Us
+          </span>
+          <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 font-['Lato'] tracking-tight bansal-heading-center">
+            Life at Bansal Wire &amp; Careers
+          </h1>
+          <p className="text-gray-500 mt-1.5 text-xs sm:text-[13px] max-w-xl mx-auto font-normal leading-normal">
+            Shape the future of global wire engineering with India's market leader.
+          </p>
+        </div>
       </div>
 
       {/* Core Values & Workplace Culture */}
-      <section className="py-16 bg-white font-sans">
+      <section className="py-6 sm:py-8 bg-white font-sans">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="text-[#e31e24] font-bold text-xs uppercase tracking-widest">Our Work Culture</span>
-            <h2 className="text-3xl font-extrabold text-gray-900 font-['Lato'] mt-1 bansal-heading-center">
+          <div className="text-center max-w-3xl mx-auto mb-8">
+            <span className="text-[#e31e24] font-bold text-[11px] sm:text-xs uppercase tracking-wider block mb-0.5">Our Work Culture</span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 font-['Lato'] tracking-tight bansal-heading-center">
               Why Build Your Career With BWI?
             </h2>
           </div>
@@ -137,17 +142,19 @@ export default function CareerPage() {
                 { img: '/images/bansal/WhatsApp-Image-2025-09-18-at-14.28.36.jpeg', caption: 'Continuous Technical Training Programs' },
                 { img: '/images/bansal/WhatsApp-Image-2025-09-18-at-15.39.31.jpeg', caption: 'Dadri Plant Construction & Engineering' }
               ].map((item, idx) => (
-                <div key={idx} className="relative h-56 rounded-xl overflow-hidden group shadow-sm bg-neutral-900">
-                  <img
-                    src={item.img}
-                    alt={item.caption}
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = '/images/bansal/Wires-320x320.jpg'
-                    }}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
-                    <span className="text-white text-xs font-semibold drop-shadow">{item.caption}</span>
+                <div key={idx} className="rounded-xl overflow-hidden group shadow-xs bg-white border border-gray-200 flex flex-col">
+                  <div className="h-48 overflow-hidden bg-gray-100">
+                    <img
+                      src={item.img}
+                      alt={item.caption}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = '/images/bansal/Wires-320x320.jpg'
+                      }}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-3 bg-white border-t border-gray-100">
+                    <span className="text-gray-800 text-xs font-semibold block">{item.caption}</span>
                   </div>
                 </div>
               ))}
