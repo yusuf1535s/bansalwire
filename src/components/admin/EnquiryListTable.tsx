@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useStore } from '../../store/useStore'
-import { Trash2, Mail, Phone, Building2, Globe, Clock, Search, CheckCircle2, MessageSquare, AlertCircle } from 'lucide-react'
+import { Trash2, Mail, Phone, Building2, Globe, Clock, Search, CheckCircle2, MessageSquare, AlertCircle, RefreshCw, Database, CloudCheck, CloudOff } from 'lucide-react'
+import { isSupabaseConfigured } from '../../services/supabase'
 import type { Enquiry } from '../../types'
 
 const statusBadges: Record<string, { label: string; style: string }> = {
@@ -11,7 +12,7 @@ const statusBadges: Record<string, { label: string; style: string }> = {
 }
 
 export function EnquiryListTable() {
-  const { enquiries, updateEnquiryStatus, deleteEnquiry } = useStore()
+  const { enquiries, updateEnquiryStatus, deleteEnquiry, syncWithSupabase, isSyncingDb } = useStore()
   const [filter, setFilter] = useState<string>('all')
   const [search, setSearch] = useState('')
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null)
@@ -123,6 +124,32 @@ export function EnquiryListTable() {
       {/* Main Table Card */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden font-sans">
         
+        {/* Database Status Banner & Refresh Header */}
+        <div className="px-5 py-3 bg-slate-50 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2">
+            <Database className="w-4 h-4 text-[#e31e24]" />
+            <span className="font-bold text-slate-700">Storage Backend:</span>
+            {isSupabaseConfigured ? (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200 text-[11px]">
+                <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Supabase Cloud Database Connected (Persistent)
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 font-semibold border border-amber-200 text-[11px]" title="Add VITE_SUPABASE_URL in .env to connect Cloud DB">
+                <AlertCircle className="w-3 h-3 text-amber-600" /> Local Offline Mode (Configure .env for Supabase Cloud)
+              </span>
+            )}
+          </div>
+
+          <button
+            onClick={() => syncWithSupabase()}
+            disabled={isSyncingDb}
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs transition cursor-pointer disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-[#e31e24] ${isSyncingDb ? 'animate-spin' : ''}`} />
+            {isSyncingDb ? 'Syncing...' : 'Sync with DB'}
+          </button>
+        </div>
+
         {/* Filter Tabs & Search Bar */}
         <div className="p-5 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-1.5">

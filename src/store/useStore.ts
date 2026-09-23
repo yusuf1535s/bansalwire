@@ -1,5 +1,17 @@
 import { create } from 'zustand'
 import type { Product, Enquiry, User, PageContent, TeamMember } from '../types'
+import {
+  isSupabaseConfigured,
+  supabase,
+  fetchEnquiriesDB,
+  insertEnquiryDB,
+  updateEnquiryStatusDB,
+  deleteEnquiryDB,
+  fetchNotificationsDB,
+  insertNotificationDB,
+  markNotificationReadDB,
+  markAllNotificationsReadDB
+} from '../services/supabase'
 
 export interface AdminNotification {
   id: string
@@ -20,15 +32,19 @@ interface AppState {
   notifications: AdminNotification[]
   latestToast: AdminNotification | null
   isAdminLoggedIn: boolean
+  isSyncingDb: boolean
 
   setAdminLogin: (val: boolean) => void
   addProduct: (product: Product) => void
   updateProduct: (id: string, product: Partial<Product>) => void
   deleteProduct: (id: string) => void
 
-  addEnquiry: (enquiry: Enquiry) => void
-  updateEnquiryStatus: (id: string, status: Enquiry['status']) => void
-  deleteEnquiry: (id: string) => void
+  addEnquiry: (enquiry: Enquiry) => Promise<void>
+  updateEnquiryStatus: (id: string, status: Enquiry['status']) => Promise<void>
+  deleteEnquiry: (id: string) => Promise<void>
+  fetchEnquiriesFromSupabase: () => Promise<void>
+  fetchNotificationsFromSupabase: () => Promise<void>
+  syncWithSupabase: () => Promise<void>
 
   updatePageContent: (id: string, content: Partial<PageContent>) => void
 
@@ -39,8 +55,8 @@ interface AppState {
   addTeamMember: (member: TeamMember) => void
   deleteTeamMember: (id: string) => void
 
-  markNotificationRead: (id: string) => void
-  markAllNotificationsRead: () => void
+  markNotificationRead: (id: string) => Promise<void>
+  markAllNotificationsRead: () => Promise<void>
   clearToast: () => void
 
   isDarkMode: boolean
@@ -101,52 +117,32 @@ const defaultProducts: Product[] = [
   },
   {
     id: '6',
-    name: 'Galvanized Wires (GI)',
+    name: 'Galvanized Steel Wires (GI)',
     category: 'Galvanized',
-    subCategory: 'Heavy & Commercial Zinc Coated',
-    description: 'Hot-dip galvanized wires with heavy zinc coating (up to 300 GSM) for extreme weather resistance.',
+    subCategory: 'Hot Dip & Electro GI',
+    description: 'Heavy zinc coated wires for boundary fences, vineyards, ACSR power transmission, and mesh.',
     image: '/images/bansal/Galvanized-Wire.jpg',
-    specifications: ['Diameter: 0.8mm - 5.0mm', 'Zinc Coating: 40 to 300 GSM', 'Standard: IS 280 / ASTM A641'],
-    applications: ['Fencing', 'Stay Wires', 'ACSR Core', 'Vineyard Trellising']
+    specifications: ['Zinc Coating: Class A / B / C', 'Diameter: 0.5mm - 6.0mm', 'Standards: IS 280'],
+    applications: ['Power Lines', 'Fencing', 'Agriculture', 'Cable Armouring', 'Netting']
   },
   {
     id: '7',
     name: 'Cable Armouring Wires & Strips',
     category: 'Cable Armouring',
-    subCategory: 'Round & Formed Flat Strips',
-    description: 'Galvanized round wires and formed strips for heavy-duty mechanical protection of power cables.',
-    image: '/images/bansal/Cable-Armouring-Wires.jpg',
-    specifications: ['Diameter: 1.0mm - 6.0mm', 'Standard: IS 3975 / BS 5467', 'High Tensile Strength'],
-    applications: ['Power Transmission Cables', 'Subsea Cabling', 'Instrumentation']
+    subCategory: 'Galvanized Round & Formed Flat Strips',
+    description: 'Mechanical protective armouring wires for high-voltage power cables and subsea telecom cables.',
+    image: '/images/bansal/Cable-Armouring-Wires-Strips.jpg',
+    specifications: ['Shapes: Round Wire / Flat Strip', 'Standard: IS 3975 / BS 1442', 'Torsion: High Ductility'],
+    applications: ['Subsea Cables', 'Power Transmission', 'Industrial Underground Cables']
   },
   {
     id: '8',
-    name: 'High Tensile Wire Rope',
-    category: 'Special Product',
-    subCategory: 'Multi-Strand Steel Wire Rope',
-    description: 'Galvanized and stainless steel wire ropes engineered for heavy hoisting, cranes, and marine winches.',
-    image: '/images/bansal/Anchor-Bolt1.jpg',
-    specifications: ['Diameter: 2mm - 50mm', 'Construction: 6x19, 6x36', 'Core: Steel / Fiber Core'],
-    applications: ['Elevators', 'Mining', 'Cranes', 'Construction', 'Marine']
-  },
-  {
-    id: '9',
-    name: 'Tyre Bead Wire',
-    category: 'Special Product',
-    subCategory: 'Bronze / Brass Coated Bead',
-    description: 'Ultra-high tensile bead wire with superior rubber adhesion for automotive and radial tyres.',
-    image: '/images/bansal/Clamps.jpg',
-    specifications: ['Diameter: 0.89mm - 1.83mm', 'Coating: Bronze/Brass Plated', 'Tensile: up to 2150 MPa'],
-    applications: ['Radial Tyres', 'Commercial Vehicle Tyres', 'Aviation Tyres']
-  },
-  {
-    id: '10',
-    name: 'Engineered Wall Ties & Anchor Bolts',
-    category: 'Special Product',
-    subCategory: 'Structural Construction Fasteners',
-    description: 'Stainless steel and galvanized cavity wall ties, masonry connector hooks, and structural anchor bolts.',
-    image: '/images/bansal/Hooks1.jpg',
-    specifications: ['Material: SS 304 / Galvanized', 'Types: Cavity Ties, Hooks, Bolts', 'ISO Certified'],
+    name: 'Speciality Engineered Wires',
+    category: 'Speciality',
+    subCategory: 'Wire Rope, Scrubber, Bead Wire',
+    description: 'Engineered specialty wires for tyre beads, wire ropes, scrubbing pads, and building materials.',
+    image: '/images/bansal/Wire-Rope-Updated-Last.jpg',
+    specifications: ['Tensile: up to 2800 MPa', 'Bronze / Zinc / Stainless Coating', 'Custom Profiles'],
     applications: ['Civil Infrastructure', 'Masonry Fastening', 'Precast Concrete']
   }
 ]
@@ -222,7 +218,7 @@ if (typeof window !== 'undefined') {
   }
 }
 
-export const useStore = create<AppState>((set) => ({
+export const useStore = create<AppState>((set, get) => ({
   products: defaultProducts,
   enquiries: loadEnquiries(),
   users: defaultUsers,
@@ -231,6 +227,7 @@ export const useStore = create<AppState>((set) => ({
   notifications: loadNotifications(),
   latestToast: null,
   isAdminLoggedIn: false,
+  isSyncingDb: false,
   isDarkMode: loadTheme(),
 
   toggleDarkMode: () =>
@@ -264,7 +261,12 @@ export const useStore = create<AppState>((set) => ({
       return { isDarkMode: val }
     }),
 
-  setAdminLogin: (val) => set({ isAdminLoggedIn: val }),
+  setAdminLogin: (val) => {
+    set({ isAdminLoggedIn: val })
+    if (val) {
+      get().syncWithSupabase()
+    }
+  },
 
   addProduct: (product) => set((state) => ({ products: [product, ...state.products] })),
   updateProduct: (id, updates) =>
@@ -274,60 +276,113 @@ export const useStore = create<AppState>((set) => ({
   deleteProduct: (id) =>
     set((state) => ({ products: state.products.filter((p) => p.id !== id) })),
 
-  // When a user submits an enquiry from Contact page / Assistant / RFQ, persist and trigger notification
-  addEnquiry: (enquiry) =>
-    set((state) => {
-      const nextEnquiries = [enquiry, ...state.enquiries]
-      try {
-        localStorage.setItem('bansal_enquiries', JSON.stringify(nextEnquiries))
-      } catch (e) {
-        console.error('Failed saving enquiry to localStorage', e)
+  // Fetch persisted enquiries from Supabase DB
+  fetchEnquiriesFromSupabase: async () => {
+    if (!isSupabaseConfigured) return
+    try {
+      const dbEnquiries = await fetchEnquiriesDB()
+      if (dbEnquiries && dbEnquiries.length > 0) {
+        set({ enquiries: dbEnquiries })
+        localStorage.setItem('bansal_enquiries', JSON.stringify(dbEnquiries))
       }
+    } catch (e) {
+      console.error('Error in fetchEnquiriesFromSupabase:', e)
+    }
+  },
 
-      const newNotif: AdminNotification = {
-        id: `notif-${Date.now()}`,
-        title: `New Lead: ${enquiry.name}`,
-        message: `${enquiry.productCategory || enquiry.category || 'Wire Inquiry'} - ${enquiry.company || enquiry.email}`,
-        timestamp: 'Just now',
-        isRead: false,
-        link: '/admin/enquiries',
-        enquiryId: enquiry.id
+  // Fetch persisted notifications from Supabase DB
+  fetchNotificationsFromSupabase: async () => {
+    if (!isSupabaseConfigured) return
+    try {
+      const dbNotifs = await fetchNotificationsDB()
+      if (dbNotifs && dbNotifs.length > 0) {
+        set({ notifications: dbNotifs })
+        localStorage.setItem('bansal_notifications', JSON.stringify(dbNotifs))
       }
-      const nextNotifs = [newNotif, ...state.notifications]
-      try {
-        localStorage.setItem('bansal_notifications', JSON.stringify(nextNotifs))
-      } catch (e) {
-        console.error('Failed saving notification to localStorage', e)
-      }
+    } catch (e) {
+      console.error('Error in fetchNotificationsFromSupabase:', e)
+    }
+  },
 
-      return {
-        enquiries: nextEnquiries,
-        notifications: nextNotifs,
-        latestToast: newNotif
-      }
-    }),
+  // Full sync with Supabase
+  syncWithSupabase: async () => {
+    if (!isSupabaseConfigured) return
+    set({ isSyncingDb: true })
+    try {
+      await Promise.all([
+        get().fetchEnquiriesFromSupabase(),
+        get().fetchNotificationsFromSupabase()
+      ])
+    } finally {
+      set({ isSyncingDb: false })
+    }
+  },
 
-  updateEnquiryStatus: (id, status) =>
-    set((state) => {
-      const next = state.enquiries.map((e) => (e.id === id ? { ...e, status } : e))
-      try {
-        localStorage.setItem('bansal_enquiries', JSON.stringify(next))
-      } catch (e) {
-        console.error('Failed updating enquiry in localStorage', e)
-      }
-      return { enquiries: next }
-    }),
+  // When a user submits an enquiry from Contact page / Assistant / RFQ, persist to Supabase & trigger notification
+  addEnquiry: async (enquiry) => {
+    const nextEnquiries = [enquiry, ...get().enquiries.filter((e) => e.id !== enquiry.id)]
+    try {
+      localStorage.setItem('bansal_enquiries', JSON.stringify(nextEnquiries))
+    } catch (e) {
+      console.error('Failed saving enquiry to localStorage', e)
+    }
 
-  deleteEnquiry: (id) =>
-    set((state) => {
-      const next = state.enquiries.filter((e) => e.id !== id)
-      try {
-        localStorage.setItem('bansal_enquiries', JSON.stringify(next))
-      } catch (e) {
-        console.error('Failed deleting enquiry from localStorage', e)
-      }
-      return { enquiries: next }
-    }),
+    const newNotif: AdminNotification = {
+      id: `notif-${Date.now()}`,
+      title: `New Lead: ${enquiry.name}`,
+      message: `${enquiry.productCategory || enquiry.category || 'Wire Inquiry'} - ${enquiry.company || enquiry.email}`,
+      timestamp: 'Just now',
+      isRead: false,
+      link: '/admin/enquiries',
+      enquiryId: enquiry.id
+    }
+    const nextNotifs = [newNotif, ...get().notifications.filter((n) => n.id !== newNotif.id)]
+    try {
+      localStorage.setItem('bansal_notifications', JSON.stringify(nextNotifs))
+    } catch (e) {
+      console.error('Failed saving notification to localStorage', e)
+    }
+
+    set({
+      enquiries: nextEnquiries,
+      notifications: nextNotifs,
+      latestToast: newNotif
+    })
+
+    // Async DB persist
+    if (isSupabaseConfigured) {
+      insertEnquiryDB(enquiry).catch((err) => console.error('Failed Supabase enquiry insert:', err))
+      insertNotificationDB(newNotif).catch((err) => console.error('Failed Supabase notification insert:', err))
+    }
+  },
+
+  updateEnquiryStatus: async (id, status) => {
+    const next = get().enquiries.map((e) => (e.id === id ? { ...e, status } : e))
+    try {
+      localStorage.setItem('bansal_enquiries', JSON.stringify(next))
+    } catch (e) {
+      console.error('Failed updating enquiry in localStorage', e)
+    }
+    set({ enquiries: next })
+
+    if (isSupabaseConfigured) {
+      updateEnquiryStatusDB(id, status).catch((err) => console.error('Failed Supabase status update:', err))
+    }
+  },
+
+  deleteEnquiry: async (id) => {
+    const next = get().enquiries.filter((e) => e.id !== id)
+    try {
+      localStorage.setItem('bansal_enquiries', JSON.stringify(next))
+    } catch (e) {
+      console.error('Failed deleting enquiry from localStorage', e)
+    }
+    set({ enquiries: next })
+
+    if (isSupabaseConfigured) {
+      deleteEnquiryDB(id).catch((err) => console.error('Failed Supabase enquiry delete:', err))
+    }
+  },
 
   updatePageContent: (id, content) =>
     set((state) => ({
@@ -348,27 +403,78 @@ export const useStore = create<AppState>((set) => ({
   deleteTeamMember: (id) =>
     set((state) => ({ teamMembers: state.teamMembers.filter((m) => m.id !== id) })),
 
-  markNotificationRead: (id) =>
-    set((state) => {
-      const next = state.notifications.map((n) => (n.id === id ? { ...n, isRead: true } : n))
-      try {
-        localStorage.setItem('bansal_notifications', JSON.stringify(next))
-      } catch (e) {
-        console.error('Failed updating notifications in localStorage', e)
-      }
-      return { notifications: next }
-    }),
+  markNotificationRead: async (id) => {
+    const next = get().notifications.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+    try {
+      localStorage.setItem('bansal_notifications', JSON.stringify(next))
+    } catch (e) {
+      console.error('Failed updating notifications in localStorage', e)
+    }
+    set({ notifications: next })
 
-  markAllNotificationsRead: () =>
-    set((state) => {
-      const next = state.notifications.map((n) => ({ ...n, isRead: true }))
-      try {
-        localStorage.setItem('bansal_notifications', JSON.stringify(next))
-      } catch (e) {
-        console.error('Failed updating notifications in localStorage', e)
-      }
-      return { notifications: next }
-    }),
+    if (isSupabaseConfigured) {
+      markNotificationReadDB(id).catch((err) => console.error('Failed Supabase notification read update:', err))
+    }
+  },
+
+  markAllNotificationsRead: async () => {
+    const next = get().notifications.map((n) => ({ ...n, isRead: true }))
+    try {
+      localStorage.setItem('bansal_notifications', JSON.stringify(next))
+    } catch (e) {
+      console.error('Failed updating notifications in localStorage', e)
+    }
+    set({ notifications: next })
+
+    if (isSupabaseConfigured) {
+      markAllNotificationsReadDB().catch((err) => console.error('Failed Supabase mark all read:', err))
+    }
+  },
 
   clearToast: () => set({ latestToast: null })
 }))
+
+// Auto-sync with Supabase and setup Realtime subscription on startup
+if (typeof window !== 'undefined' && isSupabaseConfigured && supabase) {
+  // Initial background sync
+  useStore.getState().syncWithSupabase()
+
+  // Subscribe to real-time additions to enquiries and notifications
+  try {
+    supabase
+      .channel('bansal-db-changes')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'enquiries' },
+        (payload) => {
+          const newEnquiry = payload.new as Enquiry
+          if (newEnquiry && newEnquiry.id) {
+            const current = useStore.getState().enquiries
+            if (!current.some((e) => e.id === newEnquiry.id)) {
+              const next = [newEnquiry, ...current]
+              useStore.setState({ enquiries: next })
+              localStorage.setItem('bansal_enquiries', JSON.stringify(next))
+            }
+          }
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'notifications' },
+        (payload) => {
+          const newNotif = payload.new as AdminNotification
+          if (newNotif && newNotif.id) {
+            const current = useStore.getState().notifications
+            if (!current.some((n) => n.id === newNotif.id)) {
+              const next = [newNotif, ...current]
+              useStore.setState({ notifications: next, latestToast: newNotif })
+              localStorage.setItem('bansal_notifications', JSON.stringify(next))
+            }
+          }
+        }
+      )
+      .subscribe()
+  } catch (err) {
+    console.error('Failed setting up Supabase Realtime channel:', err)
+  }
+}
